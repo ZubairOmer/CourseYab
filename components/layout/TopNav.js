@@ -85,8 +85,8 @@ const TopNav = () => {
             >
               <ItemGroup>
                 <Item key="/user">
-                  <Link href="/user">
-                    <a>Dashboard</a>
+                  <Link href="/me/update">
+                    <a>Profile</a>
                   </Link>
                 </Item>
                 <Item onClick={handleLogout}>Logout</Item>
