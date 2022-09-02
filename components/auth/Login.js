@@ -1,14 +1,16 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useContext } from "react";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import { signIn } from "next-auth/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { UserContext } from "../../context/userContext";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("omer.zubair01@gmail.com");
+  const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
+  const { state, dispatch } = useContext(UserContext);
 
   const router = useRouter();
 
@@ -28,7 +30,9 @@ const Login = () => {
       toast.error(result.error);
       setLoading(false);
     } else {
-      router.push("/");
+      // router.push("/");
+      window.location.href = "/";
+      dispatch({ type: "LOGIN", payload: state.user });
     }
   };
 
