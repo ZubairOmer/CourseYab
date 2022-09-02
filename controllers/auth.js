@@ -36,3 +36,13 @@ export const registerUser = catchAsyncErrors(async (req, res) => {
     message: "Account Registered successfully",
   });
 });
+
+// Cuurent user profile   =>   /api/me
+export const currentUserProfile = catchAsyncErrors(async (req, res) => {
+  const user = await User.findById(req.user._id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});

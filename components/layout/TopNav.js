@@ -48,6 +48,16 @@ const TopNav = () => {
           <a>Register</a>
         </Link>
       </Item>
+
+      <Item
+        key="/register"
+        onClick={(e) => setCurrent(e.key)}
+        icon={<UserAddOutlined />}
+      >
+        <Link href="/register">
+          <a>User Name</a>
+        </Link>
+      </Item>
     </Menu>
   );
 };
