@@ -1,0 +1,33 @@
+{
+  "name": "nextforalways",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^4.5.0",
+    "antd": "^4.22.8",
+    "axios": "^0.24.0",
+    "bcryptjs": "^2.4.3",
+    "bootstrap": "^4.6.2",
+    "cloudinary": "^1.25.1",
+    "mongoose": "^5.12.4",
+    "next": "12.0.2",
+    "next-absolute-url": "^1.2.2",
+    "next-auth": "^3.17.2",
+    "next-connect": "^0.10.1",
+    "nodemailer": "^6.5.0",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.6",
+    "react-toastify": "^7.0.4",
+    "redux": "^4.1.2"
+  },
+  "devDependencies": {
+    "eslint": "7",
+    "eslint-config-next": "12.0.2"
+  }
+}
