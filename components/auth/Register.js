@@ -5,11 +5,22 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { SyncOutlined } from "@ant-design/icons";
 import axios from "axios";
+import Image from "next/image";
 
 const Register = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const { name, email, password } = user;
+
+  const [avatar, setAvatar] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState(
+    "/images/default_avatar.jpg"
+  );
+
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
@@ -19,17 +30,36 @@ const Register = () => {
       e.preventDefault();
       setLoading(true);
       const { origin } = absoluteURL();
+
       const { data } = await axios.post(`${origin}/api/auth/register`, {
         name,
         email,
         password,
+        avatar,
       });
       setLoading(false);
       toast.success("Register user successfully");
-      ReadableStreamDefaultController.push("/login");
+      router.push("/login");
     } catch (err) {
-      toast.error(err);
+      toast.error(err.response.data.message);
       setLoading(false);
+    }
+  };
+
+  const onChange = (e) => {
+    if (e.target.name === "avatar") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setAvatar(reader.result);
+          setAvatarPreview(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+    } else {
+      setUser({ ...user, [e.target.name]: e.target.value });
     }
   };
 
@@ -42,8 +72,9 @@ const Register = () => {
           <input
             type="text"
             className="form-control mb-4 p-4"
+            name="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={onChange}
             placeholder="Enter name"
             required
           />
@@ -51,8 +82,9 @@ const Register = () => {
           <input
             type="email"
             className="form-control mb-4 p-4"
+            name="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={onChange}
             placeholder="Enter email"
             required
           />
@@ -60,11 +92,40 @@ const Register = () => {
           <input
             type="password"
             className="form-control mb-4 p-4"
+            name="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={onChange}
             placeholder="Enter password"
             required
           />
+          <div className="form-group">
+            <div className="d-flex align-items-center justify-content-center">
+              <div>
+                <figure className="avatar mr-2 item-rtl">
+                  <Image
+                    src={avatarPreview}
+                    className="rounded-circle"
+                    alt="image"
+                    width={70}
+                    height={70}
+                  />
+                </figure>
+              </div>
+              <div className="custom-file">
+                <input
+                  type="file"
+                  name="avatar"
+                  className="custom-file-input"
+                  id="customFile"
+                  accept="images/*"
+                  onChange={onChange}
+                />
+                <label className="custom-file-label" htmlFor="customFile">
+                  Choose Avatar
+                </label>
+              </div>
+            </div>
+          </div>
 
           <button
             type="submit"
