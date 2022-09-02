@@ -4,8 +4,21 @@ import cloudinary from "cloudinary";
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 
+// Setting up cloudinary config
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 // Register user   =>   /api/auth/register
 export const registerUser = catchAsyncErrors(async (req, res) => {
+  const result = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "edemy/avatars",
+    width: "150",
+    crop: "scale",
+  });
+
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -13,8 +26,8 @@ export const registerUser = catchAsyncErrors(async (req, res) => {
     email,
     password,
     avatar: {
-      public_id: "bookit/rooms/1_bzynlv",
-      url: "https://res.cloudinary.com/bookit/image/upload/v1618590762/bookit/rooms/1_bzynlv.jpg",
+      public_id: result.public_id,
+      url: result.secure_url,
     },
   });
 
