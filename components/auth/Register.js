@@ -1,13 +1,36 @@
 import { Fragment, useState } from "react";
+import absoluteURL from "next-absolute-url";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { SyncOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.table({ name, email, password });
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      setLoading(true);
+      const { origin } = absoluteURL();
+      const { data } = await axios.post(`${origin}/api/auth/register`, {
+        name,
+        email,
+        password,
+      });
+      setLoading(false);
+      toast.success("Register user successfully");
+      ReadableStreamDefaultController.push("/login");
+    } catch (err) {
+      toast.error(err);
+      setLoading(false);
+    }
   };
 
   return (
@@ -43,10 +66,20 @@ const Register = () => {
             required
           />
 
-          <button type="submit" className="btn btn-block btn-primary">
-            Submit
+          <button
+            type="submit"
+            className="btn btn-block btn-primary"
+            disabled={!name || !email || !password || loading}
+          >
+            {loading ? <SyncOutlined spin /> : "Submit"}
           </button>
         </form>
+        <p className="text-center p-3">
+          Already registered?{" "}
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </p>
       </div>
     </Fragment>
   );
