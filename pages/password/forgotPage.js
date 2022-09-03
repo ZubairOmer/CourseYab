@@ -1,24 +1,24 @@
 import React from "react";
 import { getSession } from "next-auth/client";
-import Profile from "../../components/user/Profile";
+import ForgotPassword from "../../components/user/ForgotPassword";
 
-const UpdatePage = () => {
+const ForgotPasswordPage = () => {
   return (
     <div>
-      <Profile />
+      <ForgotPassword />
     </div>
   );
 };
 
-export default UpdatePage;
+export default ForgotPasswordPage;
 
 export async function getServerSideProps(context) {
   const session = await getSession({ req: context.req });
 
-  if (!session) {
+  if (session) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/",
         permanent: false,
       },
     };
