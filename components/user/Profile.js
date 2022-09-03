@@ -46,8 +46,8 @@ const Profile = () => {
     <>
       <div className="container container-fluid">
         <div className="row wrapper">
-          <div className="col-10 col-lg-5">
-            <form className="shadow-lg" onSubmit={submitHandler}>
+          <div className="col-10 d-flex justify-content-center align-items-center mt-4">
+            <form className="shadow-lg py-4 px-5" onSubmit={submitHandler}>
               <h1 className="mb-3">Update Profile</h1>
 
               <div className="form-group">

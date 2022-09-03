@@ -5,6 +5,8 @@ module.exports = {
   },
   env: {
     DB_LOCAL_URI: "mongodb://localhost:27017/edemy",
+    DB_URI:
+      "mongodb+srv://zubair-omer:ZO@SEIM@I77@cluster0.epqvm4g.mongodb.net/edemy?retryWrites=true&w=majority",
 
     CLOUDINARY_CLOUD_NAME: "dk2gaxwi4",
     CLOUDINARY_API_KEY: "672963364748282",
