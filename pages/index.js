@@ -5,8 +5,8 @@ const index = () => {
   return (
     <Layout title="Edemy">
       <Fragment>
-        <h1 className="jumbotron text-center bg-primary square">
-          Online Education Marketplace
+        <h1 className="jumbotron text-center bg-danger square mt-5">
+          Find Cute Courses Here
         </h1>
       </Fragment>
     </Layout>

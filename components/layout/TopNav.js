@@ -6,9 +6,11 @@ import Image from "next/image";
 
 import {
   AppstoreOutlined,
+  CarryOutOutlined,
   CoffeeOutlined,
   LoginOutlined,
   LogoutOutlined,
+  TeamOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
 import { UserContext } from "../../context/userContext";
@@ -46,6 +48,28 @@ const TopNav = () => {
             <a>App</a>
           </Link>
         </Item>
+        {user && user.role && user.role.includes("Instructor") ? (
+          <Item
+            key="/instructor/course/create"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<CarryOutOutlined />}
+          >
+            <Link href="/instructor/course/create">
+              <a>Create Course</a>
+            </Link>
+          </Item>
+        ) : (
+          <Item
+            key="/me/become-instructor"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<TeamOutlined />}
+          >
+            <Link href="/me/become-instructor">
+              <a>Become Instructor</a>
+            </Link>
+          </Item>
+        )}
+
         {user === null && (
           <>
             <Item
