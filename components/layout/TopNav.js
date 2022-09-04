@@ -103,7 +103,7 @@ const TopNav = () => {
         {user && user !== null && (
           <div className="ml-auto">
             <SubMenu
-              className="mr-3"
+              className="mr-4"
               icon={
                 <Avatar
                   shape="circle"
