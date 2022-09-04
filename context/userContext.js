@@ -33,7 +33,7 @@ const UserProvider = ({ children }) => {
         const { data } = await axios.get(`${origin}/api/me`);
         dispatch({ type: "LOGIN", payload: data.user });
       } catch (error) {
-        dispatch({ type: "LOGOUT" });
+        return;
       }
     };
 

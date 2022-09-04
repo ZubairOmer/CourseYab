@@ -66,7 +66,7 @@ const TopNav = () => {
             <div>
               <Item
                 key="/me/become-instructor"
-                onClick={(e) => user && setCurrent(e.key)}
+                onClick={(e) => setCurrent(e.key)}
                 icon={<TeamOutlined />}
               >
                 <Link href="/me/become-instructor">
