@@ -16,19 +16,19 @@ const UpdatePage = () => {
 
 export default UpdatePage;
 
-// export async function getServerSideProps(context) {
-//   const session = await getSession({ req: context.req });
+export async function getServerSideProps(context) {
+  const session = await getSession({ req: context.req });
 
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/login",
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: { session },
-//   };
-// }
+  return {
+    props: { session },
+  };
+}
