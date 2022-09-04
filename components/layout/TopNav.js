@@ -24,8 +24,6 @@ const TopNav = () => {
     dispatch,
   } = useContext(UserContext);
 
-  console.log("KHAR SAG", user);
-
   const handleLogout = () => {
     signOut();
     dispatch({ type: "LOGOUT" });
@@ -34,7 +32,8 @@ const TopNav = () => {
   useEffect(() => {
     process.browser && setCurrent(window.location.pathname);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [process.browser]);
+    console.log("FURRENT PATH", current);
+  }, [current]);
 
   return (
     <div className="py-2">
@@ -49,27 +48,32 @@ const TopNav = () => {
           </Link>
         </Item>
 
+        {/* key does not work cuz of user not loaded initialy */}
         {user &&
           (user.role && user.role.includes("Instructor") ? (
-            <Item
-              key="/instructor/course/create"
-              onClick={(e) => setCurrent(e.key)}
-              icon={<CarryOutOutlined />}
-            >
-              <Link href="/instructor/course/create">
-                <a>Create Course</a>
-              </Link>
-            </Item>
+            <div>
+              <Item
+                key="/instructor/course/create"
+                onClick={(e) => setCurrent(e.key)}
+                icon={<CarryOutOutlined />}
+              >
+                <Link href="/instructor/course/create">
+                  <a>Create Course</a>
+                </Link>
+              </Item>
+            </div>
           ) : (
-            <Item
-              key="/me/become-instructor"
-              onClick={(e) => setCurrent(e.key)}
-              icon={<TeamOutlined />}
-            >
-              <Link href="/me/become-instructor">
-                <a>Become Instructor</a>
-              </Link>
-            </Item>
+            <div>
+              <Item
+                key="/me/become-instructor"
+                onClick={(e) => user && setCurrent(e.key)}
+                icon={<TeamOutlined />}
+              >
+                <Link href="/me/become-instructor">
+                  <a>Become Instructor</a>
+                </Link>
+              </Item>
+            </div>
           ))}
 
         {user === null && (
@@ -96,21 +100,22 @@ const TopNav = () => {
           </>
         )}
 
-        {user !== null && (
+        {user && user !== null && (
           <div className="ml-auto">
             <SubMenu
+              className="mr-3"
               icon={
                 <Avatar
                   shape="circle"
                   size={50}
                   src={user.avatar && user.avatar.url}
+                  className="mr-1"
                 />
               }
               title={user && user.name}
-              className="float-right"
             >
               <ItemGroup>
-                <Item key="/user">
+                <Item key="/me/update">
                   <Link href="/me/update">
                     <a>Profile</a>
                   </Link>

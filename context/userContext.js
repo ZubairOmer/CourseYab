@@ -1,7 +1,6 @@
 import { useReducer, createContext, useEffect } from "react";
 import absoluteURL from "next-absolute-url";
 import axios from "axios";
-import Cookies from "js-cookie";
 
 // create context
 const UserContext = createContext();
@@ -33,9 +32,7 @@ const UserProvider = ({ children }) => {
       try {
         const { data } = await axios.get(`${origin}/api/me`);
         dispatch({ type: "LOGIN", payload: data.user });
-        // Cookies.set("user", JSON.stringify(data.user));
       } catch (error) {
-        // Cookies.set("user", JSON.stringify(null));
         dispatch({ type: "LOGOUT" });
       }
     };
