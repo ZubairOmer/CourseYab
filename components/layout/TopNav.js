@@ -26,9 +26,7 @@ const TopNav = () => {
 
   useEffect(() => {
     process.browser && setCurrent(window.location.pathname);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    console.log("FURRENT PATH", current);
-  }, [current]);
+  }, []);
 
   const handleLogout = () => {
     signOut();
@@ -100,8 +98,22 @@ const TopNav = () => {
           </>
         )}
 
-        {user && user !== null && (
+        {user && user.role && user.role.includes("Instructor") && (
           <div className="ml-auto">
+            <Item
+              key="/instructor"
+              onClick={(e) => setCurrent(e.key)}
+              icon={<TeamOutlined />}
+              className="ml-auto"
+            >
+              <Link href="/instructor">
+                <a>Instructor</a>
+              </Link>
+            </Item>
+          </div>
+        )}
+        {user && user !== null && (
+          <div>
             <SubMenu
               className="mr-4"
               icon={
