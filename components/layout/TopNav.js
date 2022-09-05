@@ -34,7 +34,7 @@ const TopNav = () => {
   };
 
   return (
-    <div className="py-2">
+    <div className="py-2 d-sticky top-0">
       <Menu mode="horizontal" selectedKeys={[current]}>
         <Item
           key="/"

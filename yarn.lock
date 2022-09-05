@@ -3416,6 +3416,11 @@
     "object-assign" "^4.1.1"
     "scheduler" "^0.20.2"
 
+"react-image-file-resizer@^0.4.8":
+  "integrity" "sha512-Ue7CfKnSlsfJ//SKzxNMz8avDgDSpWQDOnTKOp/GNRFJv4dO9L5YGHNEnj40peWkXXAK2OK0eRIoXhOYpUzUTQ=="
+  "resolved" "https://registry.npmjs.org/react-image-file-resizer/-/react-image-file-resizer-0.4.8.tgz"
+  "version" "0.4.8"
+
 "react-is@^16.12.0":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"

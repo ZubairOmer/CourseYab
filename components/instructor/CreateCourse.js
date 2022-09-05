@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import InstructorRoute from "../routes/InstructorRoute";
 import CourseCreateForm from "../forms/CourseCreateForm";
+import Resizer from "react-image-file-resizer";
+import { toast } from "react-toastify";
 
 const CourseCreate = () => {
   // state
@@ -9,23 +11,45 @@ const CourseCreate = () => {
     name: "",
     description: "",
     price: "9.99",
-    uploading: false,
     paid: true,
     loading: false,
-    imagePreview: "",
   });
 
+  const [image, setImage] = useState("");
+  const [imagePreview, setImagePreview] = useState("");
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+
   const handleChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+    if (e.target.name === "image") {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImage(reader.result);
+          setImagePreview(reader.result);
+        }
+      };
+
+      reader.readAsDataURL(e.target.files[0]);
+      // upload the fucking image to the cloudinary server
+    } else {
+      setValues({ ...values, [e.target.name]: e.target.value });
+    }
   };
 
-  const handleImage = () => {
-    //
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(values);
+    setValues({ ...values, loading: true });
+    try {
+      let { data } = await axios.post("/api/course/upload-image", {
+        image,
+      });
+      setValues({ ...values, loading: false });
+      toast.success("Image upoaded to cloudinary sire.");
+    } catch (error) {
+      setValues({ ...values, loading: false });
+      toast.error("Image upload failed. Try later.");
+    }
   };
 
   return (
@@ -34,10 +58,12 @@ const CourseCreate = () => {
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}
-          handleImage={handleImage}
+          // handleImage={handleImage}
           handleChange={handleChange}
           values={values}
           setValues={setValues}
+          imagePreview={imagePreview}
+          uploadButtonText={uploadButtonText}
         />
       </div>
       <pre>{JSON.stringify(values, null, 4)}</pre>
