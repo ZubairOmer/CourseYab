@@ -34,8 +34,18 @@ const TopNav = () => {
   };
 
   return (
-    <div className="py-2 d-sticky top-0">
-      <Menu mode="horizontal" selectedKeys={[current]}>
+    <div className="py-2">
+      <Menu
+        mode="horizontal"
+        selectedKeys={[current]}
+        style={{
+          // position: "fixed",
+          // top: "0px",
+          // zIndex: 999999999999999999,
+          // width: "100%",
+          padding: "4px 3px",
+        }}
+      >
         <Item
           key="/"
           onClick={(e) => setCurrent(e.key)}
@@ -113,9 +123,8 @@ const TopNav = () => {
           </div>
         )}
         {user && user !== null && (
-          <div>
+          <div className={`${!user.role.includes("Instructor") && "ml-auto"}`}>
             <SubMenu
-              className="mr-4"
               icon={
                 <Avatar
                   shape="circle"
