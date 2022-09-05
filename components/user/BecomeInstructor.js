@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { Button } from "antd";
+import absoluteURL from "next-absolute-url";
 import axios from "axios";
 import {
   SettingOutlined,
@@ -9,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import UserRoute from "../../components/routes/UserRoute";
+import router from "next/router";
 
 const BecomeInstructor = () => {
   // state
@@ -17,20 +19,19 @@ const BecomeInstructor = () => {
     state: { user },
   } = useContext(UserContext);
 
-  const becomeInstructor = () => {
-    // console.log("become instructor");
-    setLoading(true);
-    axios
-      .post("/api/make-instructor")
-      .then((res) => {
-        console.log(res);
-        window.location.href = res.data;
-      })
-      .catch((err) => {
-        console.log(err.response.status);
-        toast.error("Stripe onboarding failed. Try again.");
-        setLoading(false);
-      });
+  const becomeInstructor = async () => {
+    try {
+      const { origin } = absoluteURL();
+      setLoading(true);
+      const { data } = await axios.put(
+        `${origin}/api/instructor/make-instructor`
+      );
+      toast.success("You become instructor now you can create courese");
+      router.push("/instructor/course/create");
+    } catch (error) {
+      toast.error("Could not become instructor try later");
+      setLoading(false);
+    }
   };
 
   return (

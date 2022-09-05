@@ -38,7 +38,7 @@ const UserProvider = ({ children }) => {
     };
 
     loadUser();
-  }, []);
+  }, [state]);
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>
