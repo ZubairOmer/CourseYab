@@ -27,7 +27,7 @@ const BecomeInstructor = () => {
         `${origin}/api/instructor/make-instructor`
       );
       toast.success("You become instructor now you can create courese");
-      router.push("/instructor/course/create");
+      window.location.href = "/instructor/course/create";
     } catch (error) {
       toast.error("Could not become instructor try later");
       setLoading(false);

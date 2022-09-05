@@ -14,3 +14,15 @@ export const makeInstructor = catchAsyncErrors(async (req, res) => {
     message: "User role execeded to Instructor",
   });
 });
+
+export const currentInstructor = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user._id);
+
+  if (!user.role.includes("Instructor")) {
+    return next(new ErrorHandler("This user is not an instructor sire"));
+  } else {
+    res.status(200).json({
+      success: true,
+    });
+  }
+});

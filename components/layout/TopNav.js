@@ -24,16 +24,16 @@ const TopNav = () => {
     dispatch,
   } = useContext(UserContext);
 
-  const handleLogout = () => {
-    signOut();
-    dispatch({ type: "LOGOUT" });
-  };
-
   useEffect(() => {
     process.browser && setCurrent(window.location.pathname);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     console.log("FURRENT PATH", current);
   }, [current]);
+
+  const handleLogout = () => {
+    signOut();
+    dispatch({ type: "LOGOUT" });
+  };
 
   return (
     <div className="py-2">

@@ -18,5 +18,7 @@ module.exports = {
     SMTP_PASSWORD: "9a4ad65402d950",
     SMTP_FROM_EMAIL: "noreplyzubair@gmail.com",
     SMTP_FROM_NAME: "noreplyZubair",
+
+    NEXTAUTH_URL: "",
   },
 };

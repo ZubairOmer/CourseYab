@@ -26,6 +26,8 @@ const reducer = (state, action) => {
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState);
 
+  console.log("KAPLER", state);
+
   useEffect(() => {
     const { origin } = absoluteURL();
     const loadUser = async () => {
@@ -38,7 +40,7 @@ const UserProvider = ({ children }) => {
     };
 
     loadUser();
-  }, [state]);
+  }, []);
 
   return (
     <UserContext.Provider value={{ state, dispatch }}>
