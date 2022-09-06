@@ -16,7 +16,7 @@ const CourseCreateForm = ({
     children.push(<Option key={i.toFixed(2)}>${i.toFixed(2)}</Option>);
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} encType="multipart/form-data">
       <div className="form-group">
         <input
           type="text"

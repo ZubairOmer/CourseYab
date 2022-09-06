@@ -28,6 +28,7 @@
     "react-redux": "^7.2.6",
     "react-toastify": "^7.0.4",
     "redux": "^4.1.2",
+    "slugify": "^1.6.5",
     "validator": "^13.7.0"
   },
   "devDependencies": {

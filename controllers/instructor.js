@@ -1,8 +1,10 @@
 import User from "../models/user";
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
+import Course from "../models/course";
 import absoluteURL from "next-absolute-url";
 import cloudinary from "cloudinary";
+import slugify from "slugify";
 
 // Setting up cloudinary config
 cloudinary.config({
@@ -38,16 +40,50 @@ export const currentInstructor = catchAsyncErrors(async (req, res, next) => {
 });
 
 // instructor uload the course image
-export const courseUploadImage = catchAsyncErrors(async (req, res) => {
+// export const courseUploadImage = catchAsyncErrors(async (req, res) => {
+//   const result = await cloudinary.v2.uploader.upload(req.body.image, {
+//     folder: "edemy/course-image",
+//     width: "150",
+//     crop: "scale",
+//   });
+
+//   res.status(200).json({
+//     success: true,
+//     message: "Account Registered successfully",
+//     result,
+//   });
+// });
+
+// instructor create the course
+export const createCourse = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(req.body.image, {
     folder: "edemy/course-image",
     width: "150",
     crop: "scale",
   });
 
-  res.status(200).json({
+  const alreadyExistedCourse = await Course.findOne({
+    slug: slugify(req.body.name.toLowerCase()),
+  });
+
+  if (alreadyExistedCourse) {
+    return next(
+      new ErrorHandler(
+        `Course ${req.body.name} already exists choose another title`
+      )
+    );
+  }
+
+  const course = await Course.create({
+    slug: slugify(req.body.name),
+    instructor: req.user._id,
+    image: "asdfasdfasdf",
+    ...req.body,
+  });
+
+  res.status(201).json({
     success: true,
-    message: "Account Registered successfully",
+    course,
     result,
   });
 });
