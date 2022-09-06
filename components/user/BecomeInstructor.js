@@ -1,8 +1,9 @@
 import { useContext, useState } from "react";
-import { UserContext } from "../../context/userContext";
+// import { UserContext } from "../../context/userContext";
 import { Button } from "antd";
 import absoluteURL from "next-absolute-url";
 import axios from "axios";
+import { useSession } from "next-auth/client";
 import {
   SettingOutlined,
   UserSwitchOutlined,
@@ -15,9 +16,12 @@ import router from "next/router";
 const BecomeInstructor = () => {
   // state
   const [loading, setLoading] = useState(false);
-  const {
-    state: { user },
-  } = useContext(UserContext);
+  const [session] = useSession();
+
+  const user = session && session.user;
+  // const {
+  //   state: { user },
+  // } = useContext(UserContext);
 
   const becomeInstructor = async () => {
     try {

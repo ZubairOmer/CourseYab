@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect } from "react";
 import Head from "next/head";
-import TopNav from "./TopNav";
+// import TopNav from "./TopNav";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Layout = ({ title, children }) => {
+  console.log("FUCKING LAYOUT.JS");
   return (
     <Fragment>
       <Head>
@@ -14,7 +15,7 @@ const Layout = ({ title, children }) => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <div>
-        <TopNav />
+        {/* <TopNav /> */}
         <ToastContainer position="bottom-right" />
         {children}
       </div>

@@ -19,6 +19,6 @@ module.exports = {
     SMTP_FROM_EMAIL: "noreplyzubair@gmail.com",
     SMTP_FROM_NAME: "noreplyZubair",
 
-    NEXTAUTH_URL: "",
+    NEXTAUTH_URL: "http://localhost:3000",
   },
 };

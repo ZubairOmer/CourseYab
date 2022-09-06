@@ -1,4 +1,3 @@
-import React from "react";
 import { getSession } from "next-auth/client";
 import Profile from "../../components/user/Profile";
 import UserRoute from "../../components/routes/UserRoute";

@@ -3,6 +3,7 @@ import { Avatar, Menu } from "antd";
 import Link from "next/link";
 import { signOut } from "next-auth/client";
 import Image from "next/image";
+import { useSession } from "next-auth/client";
 
 import {
   AppstoreOutlined,
@@ -13,31 +14,29 @@ import {
   TeamOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { UserContext } from "../../context/userContext";
 
 const { Item, SubMenu, ItemGroup } = Menu;
 
 const TopNav = () => {
-  const [current, setCurrent] = useState("");
-  const {
-    state: { user },
-    dispatch,
-  } = useContext(UserContext);
+  // const [current, setCurrent] = useState("");
+  const [session] = useSession();
+  const user = session && session.user;
 
-  useEffect(() => {
-    process.browser && setCurrent(window.location.pathname);
-  }, []);
+  console.log("TOPNAV FUCKING USER", user);
+
+  // useEffect(() => {
+  // process.browser && setCurrent(window.location.pathname);
+  // }, []);
 
   const handleLogout = () => {
     signOut();
-    dispatch({ type: "LOGOUT" });
   };
 
   return (
     <div className="py-2">
       <Menu
         mode="horizontal"
-        selectedKeys={[current]}
+        // selectedKeys={[current]}
         style={{
           // position: "fixed",
           // top: "0px",
@@ -48,7 +47,7 @@ const TopNav = () => {
       >
         <Item
           key="/"
-          onClick={(e) => setCurrent(e.key)}
+          // onClick={(e) => setCurrent(e.key)}
           icon={<AppstoreOutlined />}
         >
           <Link href="/">
@@ -56,13 +55,12 @@ const TopNav = () => {
           </Link>
         </Item>
 
-        {/* key does not work cuz of user not loaded initialy */}
         {user &&
           (user.role && user.role.includes("Instructor") ? (
             <div>
               <Item
                 key="/instructor/course/create"
-                onClick={(e) => setCurrent(e.key)}
+                // onClick={(e) => setCurrent(e.key)}
                 icon={<CarryOutOutlined />}
               >
                 <Link href="/instructor/course/create">
@@ -74,7 +72,7 @@ const TopNav = () => {
             <div>
               <Item
                 key="/me/become-instructor"
-                onClick={(e) => setCurrent(e.key)}
+                // onClick={(e) => setCurrent(e.key)}
                 icon={<TeamOutlined />}
               >
                 <Link href="/me/become-instructor">
@@ -88,7 +86,7 @@ const TopNav = () => {
           <>
             <Item
               key="/login"
-              onClick={(e) => setCurrent(e.key)}
+              // onClick={(e) => setCurrent(e.key)}
               icon={<LoginOutlined />}
             >
               <Link href="/login">
@@ -98,7 +96,7 @@ const TopNav = () => {
 
             <Item
               key="/register"
-              onClick={(e) => setCurrent(e.key)}
+              // onClick={(e) => setCurrent(e.key)}
               icon={<UserAddOutlined />}
             >
               <Link href="/register">
@@ -112,7 +110,7 @@ const TopNav = () => {
           <div className="ml-auto">
             <Item
               key="/instructor"
-              onClick={(e) => setCurrent(e.key)}
+              // onClick={(e) => setCurrent(e.key)}
               icon={<TeamOutlined />}
               className="ml-auto"
             >
