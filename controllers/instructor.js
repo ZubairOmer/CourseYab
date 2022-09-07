@@ -84,3 +84,20 @@ export const instructorCourses = catchAsyncErrors(async (req, res) => {
     courses,
   });
 });
+
+// get single course detials
+export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
+  const course = await Course.findOne({ slug: req.query.slug }).populate(
+    "instructor",
+    "id name"
+  );
+
+  if (!course) {
+    return next(new ErrorHandler(`No course found with this id`, 404));
+  }
+
+  res.status(200).json({
+    success: true,
+    course,
+  });
+});

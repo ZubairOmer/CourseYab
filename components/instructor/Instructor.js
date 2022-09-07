@@ -20,7 +20,6 @@ const Instructor = () => {
           `${origin}/api/instructor/instructor-courses`
         );
         setCourses(data.courses);
-        console.log("COURSES SIRE", data.courses);
         setLoading(false);
       } catch (error) {
         toast.error(error.response.data.message);
@@ -39,7 +38,7 @@ const Instructor = () => {
         Instructor Dashboard
       </h1>
 
-      {courses &&
+      {courses && courses.length > 0 ? (
         courses.map((course) => (
           <>
             <div className="media pt-2">
@@ -52,7 +51,7 @@ const Instructor = () => {
                 <div className="row">
                   <div className="col">
                     <Link
-                      href={`/instructor/course/view/${course._id}`}
+                      href={`/instructor/course/view/${course.slug}`}
                       className="pointer"
                     >
                       <a className="mt-2 text-primary">
@@ -99,7 +98,10 @@ const Instructor = () => {
               </div>
             </div>
           </>
-        ))}
+        ))
+      ) : (
+        <p>No course created by this onstructor now</p>
+      )}
     </>
   );
 };
