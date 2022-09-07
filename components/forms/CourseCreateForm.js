@@ -46,7 +46,7 @@ const CourseCreateForm = ({
               style={{ width: "100%" }}
               size="large"
               value={values.paid}
-              onChange={(v) => setValues({ ...values, paid: !values.paid })}
+              onChange={(v) => setValues({ ...values, paid: v, price: 0 })}
             >
               <Option value={true}>Paid</Option>
               <Option value={false}>Free</Option>
@@ -99,7 +99,7 @@ const CourseCreateForm = ({
       </div>
 
       <div className="row">
-        <div className="col">
+        <div className="col text-center mt-3 p-2">
           <Button
             onClick={handleSubmit}
             disabled={values.loading}

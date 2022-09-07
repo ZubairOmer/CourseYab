@@ -70,7 +70,7 @@ const CourseCreate = () => {
 
   return (
     <>
-      <h1 className="jumbotron bg-warning text-center square">Create Course</h1>
+      <h1 className="jumbotron bg-primary text-center square">Create Course</h1>
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}
@@ -82,7 +82,6 @@ const CourseCreate = () => {
           uploadButtonText={uploadButtonText}
         />
       </div>
-      <pre>{JSON.stringify(values, null, 4)}</pre>
     </>
   );
 };

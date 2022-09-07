@@ -5,8 +5,6 @@ import { getSession, useSession } from "next-auth/client";
 const IndexPage = () => {
   const [session] = useSession();
 
-  console.log("INDEX.JS PAGE");
-
   return (
     <Layout title="Edemy">
       <Fragment>

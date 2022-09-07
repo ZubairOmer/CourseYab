@@ -39,21 +39,6 @@ export const currentInstructor = catchAsyncErrors(async (req, res, next) => {
   }
 });
 
-// instructor uload the course image
-// export const courseUploadImage = catchAsyncErrors(async (req, res) => {
-//   const result = await cloudinary.v2.uploader.upload(req.body.image, {
-//     folder: "edemy/course-image",
-//     width: "150",
-//     crop: "scale",
-//   });
-
-//   res.status(200).json({
-//     success: true,
-//     message: "Account Registered successfully",
-//     result,
-//   });
-// });
-
 // instructor create the course
 export const createCourse = catchAsyncErrors(async (req, res, next) => {
   const result = await cloudinary.v2.uploader.upload(req.body.image, {
@@ -85,5 +70,17 @@ export const createCourse = catchAsyncErrors(async (req, res, next) => {
     success: true,
     course,
     result,
+  });
+});
+
+// get instructor courses
+export const instructorCourses = catchAsyncErrors(async (req, res) => {
+  const courses = await Course.find({ instructor: req.user._id }).sort({
+    createdAt: -1,
+  });
+
+  res.status(200).json({
+    success: true,
+    courses,
   });
 });

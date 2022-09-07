@@ -22,8 +22,6 @@ const TopNav = () => {
   const [session] = useSession();
   const user = session && session.user;
 
-  console.log("TOPNAV FUCKING USER", user);
-
   // useEffect(() => {
   // process.browser && setCurrent(window.location.pathname);
   // }, []);
@@ -36,20 +34,11 @@ const TopNav = () => {
     <div className="py-2">
       <Menu
         mode="horizontal"
-        // selectedKeys={[current]}
         style={{
-          // position: "fixed",
-          // top: "0px",
-          // zIndex: 999999999999999999,
-          // width: "100%",
           padding: "4px 3px",
         }}
       >
-        <Item
-          key="/"
-          // onClick={(e) => setCurrent(e.key)}
-          icon={<AppstoreOutlined />}
-        >
+        <Item icon={<AppstoreOutlined />}>
           <Link href="/">
             <a>App</a>
           </Link>
@@ -58,23 +47,15 @@ const TopNav = () => {
         {user &&
           (user.role && user.role.includes("Instructor") ? (
             <div>
-              <Item
-                key="/instructor/course/create"
-                // onClick={(e) => setCurrent(e.key)}
-                icon={<CarryOutOutlined />}
-              >
+              <Item icon={<CarryOutOutlined />}>
                 <Link href="/instructor/course/create">
-                  <a>Create Course</a>
+                  <a className="text-black">Create Course</a>
                 </Link>
               </Item>
             </div>
           ) : (
             <div>
-              <Item
-                key="/me/become-instructor"
-                // onClick={(e) => setCurrent(e.key)}
-                icon={<TeamOutlined />}
-              >
+              <Item icon={<TeamOutlined />}>
                 <Link href="/me/become-instructor">
                   <a>Become Instructor</a>
                 </Link>
@@ -84,21 +65,13 @@ const TopNav = () => {
 
         {user === null && (
           <>
-            <Item
-              key="/login"
-              // onClick={(e) => setCurrent(e.key)}
-              icon={<LoginOutlined />}
-            >
+            <Item icon={<LoginOutlined />}>
               <Link href="/login">
                 <a>Login</a>
               </Link>
             </Item>
 
-            <Item
-              key="/register"
-              // onClick={(e) => setCurrent(e.key)}
-              icon={<UserAddOutlined />}
-            >
+            <Item icon={<UserAddOutlined />}>
               <Link href="/register">
                 <a>Register</a>
               </Link>
@@ -108,12 +81,7 @@ const TopNav = () => {
 
         {user && user.role && user.role.includes("Instructor") && (
           <div className="ml-auto">
-            <Item
-              key="/instructor"
-              // onClick={(e) => setCurrent(e.key)}
-              icon={<TeamOutlined />}
-              className="ml-auto"
-            >
+            <Item icon={<TeamOutlined />} className="ml-auto">
               <Link href="/instructor">
                 <a>Instructor</a>
               </Link>
@@ -134,7 +102,7 @@ const TopNav = () => {
               title={user && user.name}
             >
               <ItemGroup>
-                <Item key="/me/update">
+                <Item>
                   <Link href="/me/update">
                     <a>Profile</a>
                   </Link>
