@@ -1,10 +1,13 @@
 import Layout from "../../../../components/layout/Layout";
 import SingleCourse from "../../../../components/course/SingleCourse";
+import InstructorRoute from "../../../../components/routes/InstructorRoute";
 
 const SingleCoursePage = () => {
   return (
     <Layout title="Course Name">
-      <SingleCourse />
+      <InstructorRoute>
+        <SingleCourse />
+      </InstructorRoute>
     </Layout>
   );
 };

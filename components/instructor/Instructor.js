@@ -5,7 +5,11 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import InstructorRoute from "../../components/routes/InstructorRoute";
 import { Avatar } from "antd";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import {
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  SyncOutlined,
+} from "@ant-design/icons";
 
 const Instructor = () => {
   const [courses, setCourses] = useState([]);
@@ -97,8 +101,14 @@ const Instructor = () => {
                 </div>
               </div>
             </div>
+            <hr />
           </>
         ))
+      ) : loading ? (
+        <SyncOutlined
+          spin
+          className="d-flex justify-content-center display-1 text-primary p-5"
+        />
       ) : (
         <p>No course created by this onstructor now</p>
       )}
