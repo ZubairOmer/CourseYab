@@ -4,13 +4,29 @@ import InstructorRoute from "../routes/InstructorRoute";
 import absoluteURL from "next-absolute-url";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Avatar, Tooltip } from "antd";
-import { EditOutlined, CheckOutlined, SyncOutlined } from "@ant-design/icons";
+import { Avatar, Tooltip, Button, Modal } from "antd";
+import {
+  EditOutlined,
+  CheckOutlined,
+  SyncOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
+import AddLessonForm from "../forms/AddLessonForm";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
   const [loading, setLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadButtonText, setUploadButtonText] = useState("Upload Video");
+  const [progress, setProgress] = useState(0);
+
+  const [values, setValues] = useState({
+    title: "",
+    content: "",
+  });
+  const [image, setImage] = useState("");
 
   const router = useRouter();
   const { slug } = router.query;
@@ -31,6 +47,45 @@ const CourseView = () => {
     };
     loadCourse();
   }, [slug]);
+
+  // FUNCTIONS FOR ADD LESSON
+  const handleAddLesson = (e) => {
+    e.preventDefault();
+    console.log(values);
+  };
+
+  const handleVideo = async (e) => {
+    try {
+      const file = e.target.files[0];
+      setUploadButtonText(file.name);
+      setUploading(true);
+
+      const videoData = new FormData();
+      videoData.append("video", file);
+      const { origin } = absoluteURL();
+      // save progress bar and send video as form data to backend
+      const { data } = await axios.post(
+        `${origin}/api/course/upload-vedio`,
+        videoData,
+        {
+          onUploadProgress: (e) => {
+            setProgress(Math.round((100 * e.loaded) / e.total));
+          },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      // once response is received
+      console.log(data);
+      setValues({ ...values, video: data });
+      setUploading(false);
+    } catch (err) {
+      console.log(err);
+      setUploading(false);
+      toast("Video upload failed");
+    }
+  };
 
   return (
     <div className="contianer-fluid pt-3">
@@ -72,6 +127,39 @@ const CourseView = () => {
               <ReactMarkdown>{course.description}</ReactMarkdown>
             </div>
           </div>
+          <div className="row">
+            <Button
+              onClick={() => setVisible(true)}
+              className="col-md-6 offset-md-3 text-center"
+              type="primary"
+              shape="round"
+              icon={<UploadOutlined />}
+              size="large"
+            >
+              Add Lesson
+            </Button>
+          </div>
+          <br />
+          <Modal
+            title="Add Lesson"
+            centered
+            visible={visible}
+            onCancel={() => {
+              setVisible(false);
+              setUploadButtonText("Upload Vedio");
+            }}
+            footer={null}
+          >
+            <AddLessonForm
+              values={values}
+              setValues={setValues}
+              // handleChange={handleChange}
+              handleAddLesson={handleAddLesson}
+              uploading={uploading}
+              uploadButtonText={uploadButtonText}
+              handleVideo={handleVideo}
+            />
+          </Modal>
         </div>
       )}
       {loading && (

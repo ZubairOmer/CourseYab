@@ -101,3 +101,16 @@ export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
     course,
   });
 });
+
+// upload vedio to cloudinary
+export const vedioUpload = catchAsyncErrors(async (req, res) => {
+  const result = await cloudinary.v2.uploader.upload(req.body.formData, {
+    folder: "edemy/lesson-vedio",
+    width: "150",
+    crop: "scale",
+  });
+
+  res.status(200).json({
+    success: true,
+  });
+});

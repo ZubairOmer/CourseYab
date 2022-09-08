@@ -74,7 +74,6 @@ const CourseCreate = () => {
       <div className="pt-3 pb-3">
         <CourseCreateForm
           handleSubmit={handleSubmit}
-          // handleImage={handleImage}
           handleChange={handleChange}
           values={values}
           setValues={setValues}
