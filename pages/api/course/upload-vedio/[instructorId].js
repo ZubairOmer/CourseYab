@@ -1,6 +1,17 @@
 import cloudinary from "cloudinary";
 import { IncomingForm } from "formidable";
+import nc from "next-connect";
+import dbConnect from "../../../../config/dbConnect";
+
+import onError from "../../../../middlewares/errors";
+
+import { deleteVedio } from "../../../../controllers/instructor";
+import { isAuthenticatedUser } from "../../../../middlewares/auth";
 // 👇 CHANGE THESE TO REFLECT YOUR CLOUDINARY SETTINGS 👇
+
+const handler = nc({ onError });
+dbConnect();
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -13,7 +24,14 @@ export const config = {
   },
 };
 
-export default async (req, res) => {
+const uploadVedio = async (req, res) => {
+  if (req.user._id !== req.query.instructorId) {
+    return res.status(403).json({
+      success: false,
+      message: "Only course creator can add more lessons ",
+    });
+  }
+
   const data = await new Promise((resolve, reject) => {
     const form = new IncomingForm();
 
@@ -37,3 +55,7 @@ export default async (req, res) => {
     return res.json(error);
   }
 };
+
+handler.use(isAuthenticatedUser).post(uploadVedio);
+
+export default handler;

@@ -65,7 +65,7 @@ const CourseView = () => {
       setUploading(true);
       setUploadButtonText(file.name);
       const { data } = await axios.post(
-        `${origin}/api/course/upload-vedio`,
+        `${origin}/api/course/upload-vedio/${course.instructor._id}`,
         formData,
         {
           onUploadProgress: (e) => {
@@ -87,11 +87,14 @@ const CourseView = () => {
   const handleVideoRemove = async () => {
     try {
       const { origin } = absoluteURL();
-      const { data } = await axios.delete(`${origin}/api/course/deleteVedio`, {
-        data: {
-          public_id: values.vedio.public_id,
-        },
-      });
+      const { data } = await axios.delete(
+        `${origin}/api/course/deleteVedio/${course.instructor._id}`,
+        {
+          data: {
+            public_id: values.vedio.public_id,
+          },
+        }
+      );
     } catch (error) {
       // toast.error(error);
       return;

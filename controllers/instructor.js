@@ -5,6 +5,7 @@ import Course from "../models/course";
 import absoluteURL from "next-absolute-url";
 import cloudinary from "cloudinary";
 import slugify from "slugify";
+import { IncomingForm } from "formidable";
 
 // Setting up cloudinary config
 cloudinary.config({
@@ -102,22 +103,11 @@ export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// upload vedio to cloudinary
-export const vedioUpload = catchAsyncErrors(async (req, res) => {
-  const result = await cloudinary.v2.uploader.upload(req.body.formData, {
-    folder: "edemy/lesson-vedio",
-    width: "150",
-    crop: "scale",
-  });
-
-  res.status(200).json({
-    success: true,
-  });
-});
-
 // delete vedio from cloudinary
-export const deleteVedio = catchAsyncErrors(async (req, res) => {
-  console.log(req.body.public_id);
+export const deleteVedio = catchAsyncErrors(async (req, res, next) => {
+  if (req.user._id !== req.query.instructorId) {
+    return next(new ErrorHandler("Only Instructor can delete the lesson", 403));
+  }
   const result = await cloudinary.v2.uploader.destroy(req.body.public_id);
   res.status(200).json({
     success: true,
@@ -125,3 +115,5 @@ export const deleteVedio = catchAsyncErrors(async (req, res) => {
     message: "Vedio Deleted Successfully",
   });
 });
+
+// upload vedio to cloudinary
