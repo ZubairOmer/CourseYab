@@ -62,6 +62,8 @@ const CourseView = () => {
     formData.append("inputFile", file);
 
     try {
+      setUploading(true);
+      setUploadButtonText(file.name);
       const { data } = await axios.post(
         `${origin}/api/course/upload-vedio`,
         formData,
@@ -73,9 +75,26 @@ const CourseView = () => {
           },
         }
       );
-      setValues({ ...values, vedio: data.secure_url });
+      setUploading(false);
+      setValues({ ...values, vedio: data });
     } catch (error) {
       toast.error(error.response.data.message);
+      setUploading(false);
+    }
+  };
+
+  // remove from cloudinary if clicked on X
+  const handleVideoRemove = async () => {
+    try {
+      const { origin } = absoluteURL();
+      const { data } = await axios.delete(`${origin}/api/course/deleteVedio`, {
+        data: {
+          public_id: values.vedio.public_id,
+        },
+      });
+    } catch (error) {
+      // toast.error(error);
+      return;
     }
   };
 
@@ -149,6 +168,7 @@ const CourseView = () => {
               onChange={onChange}
               uploading={uploading}
               uploadButtonText={uploadButtonText}
+              handleVideoRemove={handleVideoRemove}
               progress={progress}
             />
           </Modal>

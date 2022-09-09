@@ -1,4 +1,5 @@
-import { Button, Progress } from "antd";
+import { Button, Progress, Tooltip } from "antd";
+import { CloseCircleFilled, CloseCircleOutlined } from "@ant-design/icons";
 
 const AddLessonForm = ({
   values,
@@ -8,8 +9,9 @@ const AddLessonForm = ({
   uploadButtonText,
   onChange,
   progress,
+  handleVideoRemove,
 }) => {
-  console.log(values);
+  console.log(values, uploading);
   return (
     <div className="container pt-3">
       <form onSubmit={handleAddLesson} encType="multipart/form-data">
@@ -32,10 +34,19 @@ const AddLessonForm = ({
           placeholder="Content"
         ></textarea>
 
-        <label className="btn btn-dark btn-block text-left mt-3">
-          {/* {uploadButtonText} */}
-          <input type="file" onChange={onChange} className="hidden" />
-        </label>
+        <div className="d-flex justify-content-center">
+          <label className="btn btn-dark btn-block text-left text-center mt-3">
+            {uploadButtonText}
+            <input type="file" accept="video/*" onChange={onChange} hidden />
+          </label>
+          {!uploading && values.vedio && (
+            <Tooltip title="Remove">
+              <span onClick={handleVideoRemove} className="pt-1 pl-3">
+                <CloseCircleFilled className="text-danger d-flex justify-content-center pt-4 pointer" />
+              </span>
+            </Tooltip>
+          )}
+        </div>
 
         {progress > 0 && (
           <Progress
@@ -52,7 +63,7 @@ const AddLessonForm = ({
           loading={uploading}
           shape="round"
         >
-          Save
+          {uploading ? "Uploading Vedio..." : "Save And Continue"}
         </Button>
       </form>
     </div>

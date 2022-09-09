@@ -114,3 +114,14 @@ export const vedioUpload = catchAsyncErrors(async (req, res) => {
     success: true,
   });
 });
+
+// delete vedio from cloudinary
+export const deleteVedio = catchAsyncErrors(async (req, res) => {
+  console.log(req.body.public_id);
+  const result = await cloudinary.v2.uploader.destroy(req.body.public_id);
+  res.status(200).json({
+    success: true,
+    result,
+    message: "Vedio Deleted Successfully",
+  });
+});

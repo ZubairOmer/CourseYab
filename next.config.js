@@ -19,6 +19,13 @@ module.exports = {
     SMTP_FROM_EMAIL: "noreplyzubair@gmail.com",
     SMTP_FROM_NAME: "noreplyZubair",
 
+    webpack: (config, { dev }) => {
+      config.node = {
+        fs: "empty",
+      };
+      return config;
+    },
+
     NEXTAUTH_URL: "http://localhost:3000",
   },
 };
