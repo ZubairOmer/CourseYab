@@ -1,5 +1,4 @@
-import { Button } from "antd";
-import { Upload } from "../../components/Upload";
+import { Button, Progress } from "antd";
 
 const AddLessonForm = ({
   values,
@@ -7,8 +6,8 @@ const AddLessonForm = ({
   handleAddLesson,
   uploading,
   uploadButtonText,
-  handleVideo,
-  // handleChange,
+  onChange,
+  progress,
 }) => {
   console.log(values);
   return (
@@ -34,11 +33,17 @@ const AddLessonForm = ({
         ></textarea>
 
         <label className="btn btn-dark btn-block text-left mt-3">
-          {uploadButtonText}
-          {/* <input onChange={handleVideo} type="file" accept="video/*" hidden /> */}
-          <Upload />
+          {/* {uploadButtonText} */}
+          <input type="file" onChange={onChange} className="hidden" />
         </label>
 
+        {progress > 0 && (
+          <Progress
+            className="d-flex justify-content-center pt-2"
+            percent={progress}
+            steps={10}
+          />
+        )}
         <Button
           onClick={handleAddLesson}
           className="col mt-3"

@@ -25,8 +25,8 @@ const CourseView = () => {
   const [values, setValues] = useState({
     title: "",
     content: "",
+    vedio: "",
   });
-  const [image, setImage] = useState("");
 
   const router = useRouter();
   const { slug } = router.query;
@@ -54,36 +54,28 @@ const CourseView = () => {
     console.log(values);
   };
 
-  const handleVideo = async (e) => {
-    try {
-      const file = e.target.files[0];
-      setUploadButtonText(file.name);
-      setUploading(true);
+  // upload vedio to cloudinary after selecting vedio
+  const onChange = async (event) => {
+    event.preventDefault();
+    const formData = new FormData();
+    const file = event.target.files[0];
+    formData.append("inputFile", file);
 
-      const videoData = new FormData();
-      videoData.append("video", file);
-      const { origin } = absoluteURL();
-      // save progress bar and send video as form data to backend
+    try {
       const { data } = await axios.post(
         `${origin}/api/course/upload-vedio`,
-        videoData,
+        formData,
         {
           onUploadProgress: (e) => {
-            setProgress(Math.round((100 * e.loaded) / e.total));
-          },
-          headers: {
-            "Content-Type": "multipart/form-data",
+            if (e.lengthComputable) {
+              setProgress(Math.round(100 * e.loaded) / e.total);
+            }
           },
         }
       );
-      // once response is received
-      console.log(data);
-      setValues({ ...values, video: data });
-      setUploading(false);
-    } catch (err) {
-      console.log(err);
-      setUploading(false);
-      toast("Video upload failed");
+      setValues({ ...values, vedio: data.secure_url });
+    } catch (error) {
+      toast.error(error.response.data.message);
     }
   };
 
@@ -153,11 +145,11 @@ const CourseView = () => {
             <AddLessonForm
               values={values}
               setValues={setValues}
-              // handleChange={handleChange}
               handleAddLesson={handleAddLesson}
+              onChange={onChange}
               uploading={uploading}
               uploadButtonText={uploadButtonText}
-              handleVideo={handleVideo}
+              progress={progress}
             />
           </Modal>
         </div>
