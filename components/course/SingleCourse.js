@@ -4,7 +4,7 @@ import InstructorRoute from "../routes/InstructorRoute";
 import absoluteURL from "next-absolute-url";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { Avatar, Tooltip, Button, Modal } from "antd";
+import { Avatar, Tooltip, Button, Modal, List } from "antd";
 import {
   EditOutlined,
   CheckOutlined,
@@ -13,6 +13,7 @@ import {
 } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import AddLessonForm from "../forms/AddLessonForm";
+import Item from "antd/lib/list/Item";
 
 const CourseView = () => {
   const [course, setCourse] = useState({});
@@ -53,7 +54,6 @@ const CourseView = () => {
 
     try {
       const { origin } = absoluteURL();
-      console.log("FInal VALUES sumbit", values);
       const { data } = await axios.post(
         `${origin}/api/course/lesson/${slug}/${course.instructor._id}`,
         values
@@ -61,7 +61,10 @@ const CourseView = () => {
       setValues({ ...values, title: "", content: "" });
       setVisible(false);
       setUploadButtonText("Upload Vedio");
-      setCourse(data);
+      console.log("course", course);
+      setCourse(data.updated);
+      // console.log("Updated", course);
+      // window.location.href = `/instructor/course/view/${slug}`);
 
       toast.success("Lesson added");
     } catch (error) {
@@ -124,6 +127,7 @@ const CourseView = () => {
           <div className="media pt-2">
             <Avatar
               size={80}
+              shape="square"
               src={course.image ? course.image : "/images/default_avatar.jpg"}
             />
 
@@ -191,6 +195,26 @@ const CourseView = () => {
               progress={progress}
             />
           </Modal>
+
+          <div className="row pb-5">
+            <div className="col lesson-list">
+              <h4>
+                {course && course.lessons && course.lessons.length} Lessons
+              </h4>
+              <List
+                itemLayout="horizontal"
+                dataSource={course && course.lessons}
+                renderItem={(item, index) => (
+                  <Item>
+                    <Item.Meta
+                      avatar={<Avatar>{index + 1}</Avatar>}
+                      title={item.title}
+                    ></Item.Meta>
+                  </Item>
+                )}
+              ></List>
+            </div>
+          </div>
         </div>
       )}
       {loading && (

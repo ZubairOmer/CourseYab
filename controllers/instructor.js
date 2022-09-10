@@ -138,14 +138,12 @@ export const addLesson = catchAsyncErrors(async (req, res, next) => {
     {
       $push: { lessons: lesson },
     },
-    { new: true, useFindAndModify: false, runValidation: true } // if we dont add this so in res.json() updated wont include fresh
+    { new: true } // if we dont add this so in res.json() updated wont include fresh
   )
     .populate("instructor", "_id name")
     .exec();
 
   res.status(200).json({
-    success: true,
-    lesson,
     updated,
   });
 });

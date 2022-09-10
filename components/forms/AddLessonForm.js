@@ -61,6 +61,7 @@ const AddLessonForm = ({
           type="primary"
           loading={uploading}
           shape="round"
+          disabled={uploading || !values.title || !values.content}
         >
           {uploading ? "Uploading Vedio..." : "Save And Continue"}
         </Button>
