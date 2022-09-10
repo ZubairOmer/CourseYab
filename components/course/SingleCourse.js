@@ -38,7 +38,6 @@ const CourseView = () => {
         const { origin } = absoluteURL();
         const { data } = await axios.get(`${origin}/api/course/${slug}`);
         setCourse(data.course);
-        console.log("COURSES SIRE", data.course);
         setLoading(false);
       } catch (error) {
         // toast.error(error.response.data.message);
@@ -49,9 +48,26 @@ const CourseView = () => {
   }, [slug]);
 
   // FUNCTIONS FOR ADD LESSON
-  const handleAddLesson = (e) => {
+  const handleAddLesson = async (e) => {
     e.preventDefault();
-    console.log(values);
+
+    try {
+      const { origin } = absoluteURL();
+      console.log("FInal VALUES sumbit", values);
+      const { data } = await axios.post(
+        `${origin}/api/course/lesson/${slug}/${course.instructor._id}`,
+        values
+      );
+      setValues({ ...values, title: "", content: "" });
+      setVisible(false);
+      setUploadButtonText("Upload Vedio");
+      setCourse(data);
+
+      toast.success("Lesson added");
+    } catch (error) {
+      return toast.error(error.response.data.message);
+      setUploadButtonText("Upload Vedio");
+    }
   };
 
   // upload vedio to cloudinary after selecting vedio

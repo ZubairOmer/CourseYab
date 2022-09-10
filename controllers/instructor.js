@@ -1,7 +1,8 @@
 import User from "../models/user";
 import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
-import Course from "../models/course";
+import { Course } from "../models/course";
+import { Lesson } from "../models/course";
 import absoluteURL from "next-absolute-url";
 import cloudinary from "cloudinary";
 import slugify from "slugify";
@@ -116,4 +117,35 @@ export const deleteVedio = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// upload vedio to cloudinary
+// Add lesson to course collection
+export const addLesson = catchAsyncErrors(async (req, res, next) => {
+  const { slug, instructorId } = req.query;
+  const { title, content, vedio } = req.body;
+  console.log("Values from req.body", title, content, vedio);
+
+  if (req.user._id !== instructorId) {
+    return next(new ErrorHandler("Only Instructor can add the lesson", 403));
+  }
+
+  const lesson = await Lesson.create({
+    title,
+    content,
+    vedio,
+    slug: slugify(title),
+  });
+  const updated = await Course.findOneAndUpdate(
+    { slug },
+    {
+      $push: { lessons: lesson },
+    },
+    { new: true, useFindAndModify: false, runValidation: true } // if we dont add this so in res.json() updated wont include fresh
+  )
+    .populate("instructor", "_id name")
+    .exec();
+
+  res.status(200).json({
+    success: true,
+    lesson,
+    updated,
+  });
+});

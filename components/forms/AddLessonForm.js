@@ -11,7 +11,6 @@ const AddLessonForm = ({
   progress,
   handleVideoRemove,
 }) => {
-  console.log(values, uploading);
   return (
     <div className="container pt-3">
       <form onSubmit={handleAddLesson} encType="multipart/form-data">

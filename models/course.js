@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+require("mongoose-type-url");
 
 const { ObjectId } = mongoose.Schema;
 
@@ -19,15 +20,9 @@ const lessonSchema = new mongoose.Schema(
       type: {},
       minlength: 200,
     },
-    video: {
-      public_id: {
-        type: String,
-        required: true,
-      },
-      public_url: {
-        type: String,
-        required: true,
-      },
+    vedio: {
+      type: {},
+      required: true,
     },
     free_preview: {
       type: Boolean,
@@ -82,4 +77,6 @@ const courseSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Course || mongoose.model("Course", courseSchema);
+const Course = mongoose.models.Course || mongoose.model("Course", courseSchema);
+const Lesson = mongoose.models.Lesson || mongoose.model("Lesson", lessonSchema);
+export { Course, Lesson };
