@@ -1,9 +1,9 @@
 import { useContext, useState } from "react";
-// import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/userContext";
 import { Button } from "antd";
 import absoluteURL from "next-absolute-url";
 import axios from "axios";
-import { useSession } from "next-auth/client";
+// import { useSession } from "next-auth/client";
 import {
   SettingOutlined,
   UserSwitchOutlined,
@@ -16,12 +16,13 @@ import router from "next/router";
 const BecomeInstructor = () => {
   // state
   const [loading, setLoading] = useState(false);
-  const [session] = useSession();
+  // const [session] = useSession();
 
-  const user = session && session.user;
-  // const {
-  //   state: { user },
-  // } = useContext(UserContext);
+  // const user = session && session.user;
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(UserContext);
 
   const becomeInstructor = async () => {
     try {
@@ -31,7 +32,10 @@ const BecomeInstructor = () => {
         `${origin}/api/instructor/make-instructor`
       );
       toast.success("You become instructor now you can create courese");
-      window.location.href = "/instructor/course/create";
+      const { data: session } = await axios.get(`${origin}/api/me`);
+      dispatch({ type: "LOGIN", payload: session.user });
+      // window.location.href = "/instructor/course/create";
+      router.push("/instructor/course/create");
     } catch (error) {
       toast.error("Could not become instructor try later");
       setLoading(false);

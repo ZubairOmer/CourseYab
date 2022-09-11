@@ -4,6 +4,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/client";
 import Image from "next/image";
 import { useSession } from "next-auth/client";
+import { UserContext } from "../../context/userContext";
 
 import {
   AppstoreOutlined,
@@ -18,11 +19,16 @@ import {
 const { Item, SubMenu, ItemGroup } = Menu;
 
 const TopNav = () => {
-  const [session] = useSession();
-  const user = session && session.user;
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(UserContext);
+  // const [session] = useSession();
+  // const user = session && session.user;
 
   const handleLogout = () => {
     signOut();
+    dispatch({ type: "LOGOUT" });
   };
 
   return (

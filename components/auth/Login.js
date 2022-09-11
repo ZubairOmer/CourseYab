@@ -4,13 +4,15 @@ import { SyncOutlined } from "@ant-design/icons";
 import { signIn } from "next-auth/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-// import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/userContext";
+import axios from "axios";
+import absoluteURL from "next-absolute-url";
 
 const Login = () => {
   const [email, setEmail] = useState("omer.zubair01@gmail.com");
   const [password, setPassword] = useState("123456");
   const [loading, setLoading] = useState(false);
-  // const { state, dispatch } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
 
   const router = useRouter();
 
@@ -30,10 +32,11 @@ const Login = () => {
       toast.error(result.error);
       setLoading(false);
     } else {
-      // router.push("/");
       toast.success("User logged in successfully");
+      const { origin } = absoluteURL();
+      const { data: session } = await axios.get(`${origin}/api/me`);
+      dispatch({ type: "LOGIN", payload: session.user });
       router.push("/");
-      // dispatch({ type: "LOGIN", payload: state.user });
     }
   };
 

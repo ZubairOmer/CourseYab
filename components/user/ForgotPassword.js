@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import axios from "axios";
 import absoluteURL from "next-absolute-url";
-// import { UserContext } from "../../context/userContext";
+import { UserContext } from "../../context/userContext";
 
 const ForgotPassword = () => {
-  // const { state, dispatch } = useContext(UserContext);
+  const { state, dispatch } = useContext(UserContext);
   const [email, setEmail] = useState(state.user ? state.user.email : "");
 
   const router = useRouter();
@@ -21,7 +21,7 @@ const ForgotPassword = () => {
         email,
       });
 
-      router.push("/");
+      router.push("/login");
       toast("Email sent successfully");
     } catch (err) {
       toast("could not send email try later");

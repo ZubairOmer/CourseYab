@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useRouter, Router } from "next/router";
 import { toast } from "react-toastify";
 import Image from "next/image";
@@ -6,17 +6,22 @@ import Link from "next/link";
 import absoluteUrl from "next-absolute-url";
 import { useSession } from "next-auth/client";
 import axios from "axios";
+import { UserContext } from "../../context/userContext";
+import { Button } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const Profile = () => {
   const router = useRouter();
-  const session = useSession();
-  console.log(session);
+  const { state, dispatch } = useContext(UserContext);
+  // const session = useSession();
+  console.log("USER", state);
 
   const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const { name, email, password } = user;
 
@@ -26,29 +31,33 @@ const Profile = () => {
   );
 
   useEffect(() => {
-    if (session) {
+    if (state.user) {
       setUser({
-        name: session[0].user.name,
-        email: session[0].user.email,
+        name: state.user.name,
+        email: state.user.email,
       });
-      setAvatarPreview(session[0].user.avatar.url);
+      setAvatarPreview(state.user.avatar.url);
     }
-  }, [session]);
+  }, [state.user]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
     try {
       const { origin } = absoluteUrl();
+      setLoading(true);
       const { data } = await axios.put(`${origin}/api/user/update-profile`, {
         name,
         email,
         password,
         avatar,
       });
+      const { data: session } = await axios.get(`${origin}/api/me`);
+      dispatch({ type: "LOGIN", payload: session.user });
 
+      setLoading(false);
       toast.success("Profile updated successfully");
-      // window.location.href = "/";
+      router.push("/");
     } catch (error) {
       toast.error(error.response.data.message);
     }
@@ -76,7 +85,7 @@ const Profile = () => {
       <div className="container container-fluid">
         <div className="row wrapper">
           <div className="col-10 d-flex justify-content-center align-items-center mt-4">
-            <form className="shadow-lg py-4 px-5" onSubmit={submitHandler}>
+            <form className="shadow-lg py-4 px-5">
               <h1 className="mb-3">Update Profile</h1>
 
               <div className="form-group">
@@ -144,13 +153,17 @@ const Profile = () => {
                 </div>
               </div>
 
-              <button
+              <Button
+                onClick={submitHandler}
                 id="login_button"
-                type="submit"
+                type="primary"
+                shape="round"
                 className="btn btn-primary btn-block py-1"
+                disabled={loading}
+                icon={loading ? <UploadOutlined /> : ""}
               >
-                Submit
-              </button>
+                {loading ? "Updating" : "Submit"}
+              </Button>
             </form>
           </div>
         </div>
