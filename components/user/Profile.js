@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-
+import { useRouter, Router } from "next/router";
 import { toast } from "react-toastify";
 import Image from "next/image";
 import Link from "next/link";
+import absoluteUrl from "next-absolute-url";
+import { useSession } from "next-auth/client";
+import axios from "axios";
 
 const Profile = () => {
   const router = useRouter();
+  const session = useSession();
+  console.log(session);
 
   const [user, setUser] = useState({
     name: "",
@@ -21,8 +25,33 @@ const Profile = () => {
     "/images/default_avatar.jpg"
   );
 
-  const submitHandler = (e) => {
+  useEffect(() => {
+    if (session) {
+      setUser({
+        name: session[0].user.name,
+        email: session[0].user.email,
+      });
+      setAvatarPreview(session[0].user.avatar.url);
+    }
+  }, [session]);
+
+  const submitHandler = async (e) => {
     e.preventDefault();
+
+    try {
+      const { origin } = absoluteUrl();
+      const { data } = await axios.put(`${origin}/api/user/update-profile`, {
+        name,
+        email,
+        password,
+        avatar,
+      });
+
+      toast.success("Profile updated successfully");
+      // window.location.href = "/";
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   const onChange = (e) => {
@@ -83,23 +112,22 @@ const Profile = () => {
                   name="password"
                   value={password}
                   onChange={onChange}
+                  placeholder="write your new password"
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="avatar_upload">Avatar</label>
-                <div className="d-flex align-items-center">
-                  <div>
-                    <figure className="avatar mr-3 item-rtl">
-                      <Image
-                        src={avatarPreview}
-                        className="rounded-circle"
-                        alt="image"
-                        width={70}
-                        height={70}
-                      />
-                    </figure>
-                  </div>
+                {/* <label htmlFor="avatar_upload">Avatar</label> */}
+                <div className="d-flex align-items-center justify-content-center">
+                  <figure className="avatar mr-3 mt-3 item-rtl">
+                    <Image
+                      src={avatarPreview}
+                      className="rounded-circle"
+                      alt="image"
+                      width={70}
+                      height={70}
+                    />
+                  </figure>
                   <div className="custom-file">
                     <input
                       type="file"
@@ -110,7 +138,7 @@ const Profile = () => {
                       onChange={onChange}
                     />
                     <label className="custom-file-label" htmlFor="customFile">
-                      Choose Avatar
+                      Update Avatar
                     </label>
                   </div>
                 </div>
@@ -119,8 +147,10 @@ const Profile = () => {
               <button
                 id="login_button"
                 type="submit"
-                className="btn btn-block py-3"
-              ></button>
+                className="btn btn-primary btn-block py-1"
+              >
+                Submit
+              </button>
             </form>
           </div>
         </div>

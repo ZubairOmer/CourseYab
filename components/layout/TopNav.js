@@ -18,13 +18,8 @@ import {
 const { Item, SubMenu, ItemGroup } = Menu;
 
 const TopNav = () => {
-  // const [current, setCurrent] = useState("");
   const [session] = useSession();
   const user = session && session.user;
-
-  // useEffect(() => {
-  // process.browser && setCurrent(window.location.pathname);
-  // }, []);
 
   const handleLogout = () => {
     signOut();

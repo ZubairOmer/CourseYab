@@ -63,8 +63,6 @@ const CourseView = () => {
       setUploadButtonText("Upload Vedio");
       console.log("course", course);
       setCourse(data.updated);
-      // console.log("Updated", course);
-      // window.location.href = `/instructor/course/view/${slug}`);
 
       toast.success("Lesson added");
     } catch (error) {

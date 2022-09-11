@@ -1,12 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useRouter } from "next/router";
 import { SyncOutlined } from "@ant-design/icons";
 import UserNav from "../nav/UserNav";
 
 const UserRoute = ({ children }) => {
-  const router = useRouter();
-
   return (
     <div className="container-fluid">
       <div className="row">

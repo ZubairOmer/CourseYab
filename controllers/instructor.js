@@ -106,10 +106,12 @@ export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
 
 // delete vedio from cloudinary
 export const deleteVedio = catchAsyncErrors(async (req, res, next) => {
+  // const
   if (req.user._id !== req.query.instructorId) {
     return next(new ErrorHandler("Only Instructor can delete the lesson", 403));
   }
-  const result = await cloudinary.v2.uploader.destroy(req.body.public_id);
+  const vedio_id = req.body.public_id;
+  const result = await cloudinary.v2.uploader.destroy(vedio_id);
   res.status(200).json({
     success: true,
     result,
