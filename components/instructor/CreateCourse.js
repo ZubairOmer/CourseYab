@@ -15,6 +15,7 @@ const CourseCreate = () => {
     price: "9.99",
     paid: true,
     loading: false,
+    category: "",
   });
 
   const [image, setImage] = useState("");

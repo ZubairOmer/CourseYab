@@ -152,6 +152,7 @@ export const addLesson = catchAsyncErrors(async (req, res, next) => {
 
 // update course Content
 export const updateCourse = catchAsyncErrors(async (req, res, next) => {
+  // const { name, description, category, price } = req.body;
   const course = await Course.findOneAndUpdate(
     { slug: req.query.slug },
     req.body,
