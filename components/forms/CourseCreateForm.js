@@ -4,7 +4,6 @@ const { Option } = Select;
 
 const CourseCreateForm = ({
   handleSubmit,
-  // handleImage,
   handleChange,
   values,
   setValues,

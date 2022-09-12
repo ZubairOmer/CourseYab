@@ -66,16 +66,16 @@ const EditCourse = () => {
           "content-cype": "multipart/form-data",
         },
       };
-      const { data } = await axios.post(
-        `${origin}/api/course/create`,
+      const { data } = await axios.put(
+        `${origin}/api/course/update-course/${slug}`,
         {
-          image,
           ...values,
+          image,
         },
         config
       );
       setValues({ ...values, loading: false });
-      toast.success("Course Created successfully.");
+      toast.success("Course Updated successfully.");
       router.push("/instructor");
     } catch (error) {
       setValues({ ...values, loading: false });

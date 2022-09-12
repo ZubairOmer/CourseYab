@@ -91,7 +91,7 @@ export const instructorCourses = catchAsyncErrors(async (req, res) => {
 export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
   const course = await Course.findOne({ slug: req.query.slug }).populate(
     "instructor",
-    "id name"
+    "id"
   );
 
   if (!course) {
@@ -148,4 +148,23 @@ export const addLesson = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     updated,
   });
+});
+
+// update course Content
+export const updateCourse = catchAsyncErrors(async (req, res, next) => {
+  const course = await Course.findOneAndUpdate(
+    { slug: req.query.slug },
+    req.body,
+    {
+      new: true,
+    }
+  );
+
+  if (req.user._id !== course.instructor._id.toString()) {
+    return next(
+      new ErrorHandler("only course creator can update the course", 403)
+    );
+  }
+
+  res.json(course);
 });
