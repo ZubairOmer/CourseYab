@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import absoluteURL from "next-absolute-url";
 import { Avatar, List } from "antd";
 import Item from "antd/lib/list/Item";
+import { DeleteOutlined } from "@ant-design/icons";
 
 const EditCourse = () => {
   // state
@@ -80,7 +81,7 @@ const EditCourse = () => {
       );
       setValues({ ...values, loading: false });
       toast.success("Course Updated successfully.");
-      router.push("/instructor");
+      // router.push("/instructor");
     } catch (error) {
       setValues({ ...values, loading: false });
       toast.error(error.response.data.message);
@@ -109,6 +110,25 @@ const EditCourse = () => {
     );
 
     toast.success("Lessons are rearranged");
+  };
+
+  // delete lesson
+  const handleDelete = async (index) => {
+    const answer = window.confirm("Are you sure you want to delete ?");
+    if (!answer) return;
+    // remove lesson form client side
+    let allLessons = values.lessons;
+    const removed = allLessons.splice(index, 1);
+    setValues({ ...values, allLessons });
+    // remove lesson from server side
+    try {
+      const { origin } = absoluteURL();
+      const { data } = await axios.put(
+        `${origin}/api/course/delete-lesson/${slug}/${removed[0]._id}`
+      );
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -143,6 +163,10 @@ const EditCourse = () => {
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
+                <DeleteOutlined
+                  className="text-danger"
+                  onClick={() => handleDelete(index, item)}
+                />
               </Item>
             )}
           ></List>

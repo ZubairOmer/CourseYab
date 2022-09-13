@@ -123,7 +123,6 @@ export const deleteVedio = catchAsyncErrors(async (req, res, next) => {
 export const addLesson = catchAsyncErrors(async (req, res, next) => {
   const { slug, instructorId } = req.query;
   const { title, content, vedio } = req.body;
-  console.log("Values from req.body", title, content, vedio);
 
   if (req.user._id !== instructorId) {
     return next(new ErrorHandler("Only Instructor can add the lesson", 403));
@@ -155,7 +154,10 @@ export const updateCourse = catchAsyncErrors(async (req, res, next) => {
   // const { name, description, category, price } = req.body;
   const course = await Course.findOneAndUpdate(
     { slug: req.query.slug },
-    req.body,
+    {
+      slug: slugify(req.body.name),
+      ...req.body,
+    },
     {
       new: true,
     }
@@ -168,4 +170,25 @@ export const updateCourse = catchAsyncErrors(async (req, res, next) => {
   }
 
   res.json(course);
+});
+
+// delete lesson from the course
+export const deleteLesson = catchAsyncErrors(async (req, res, next) => {
+  const { slug, lessonId } = req.query;
+  const course = await Course.findOne({ slug });
+  const lesson = await Lesson.findOne({ _id: lessonId });
+
+  if (req.user._id !== course.instructor.toString()) {
+    return next(
+      new ErrorHandler("only course creator can update the course", 403)
+    );
+  }
+
+  const removedCourse = await Course.findByIdAndUpdate(course._id, {
+    $pull: { lessons: { _id: lessonId } },
+  });
+
+  const removedLesson = await Lesson.findByIdAndDelete(lesson._id);
+
+  res.json({ success: true });
 });
