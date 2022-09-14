@@ -4,7 +4,7 @@ import Link from "next/link";
 import axios from "axios";
 import { toast } from "react-toastify";
 import InstructorRoute from "../../components/routes/InstructorRoute";
-import { Avatar } from "antd";
+import { Avatar, Tooltip } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
@@ -83,19 +83,19 @@ const Instructor = () => {
 
                   <div className="col-md-3 mt-3 text-center">
                     {course.published ? (
-                      <div>
+                      <Tooltip title="Published">
                         <CheckCircleOutlined
                           className="h5 text-success"
                           style={{ cursor: "pointer" }}
                         />
-                      </div>
+                      </Tooltip>
                     ) : (
-                      <div>
+                      <Tooltip title="Unpublished">
                         <CloseCircleOutlined
                           className="h5 text-warning"
                           style={{ cursor: "pointer" }}
                         />
-                      </div>
+                      </Tooltip>
                     )}
                   </div>
                 </div>

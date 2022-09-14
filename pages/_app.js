@@ -5,7 +5,6 @@ import "antd/dist/antd.css";
 import "../styles/nprogress.css";
 import nProgress from "nprogress";
 import Router from "next/router";
-import { Provider } from "next-auth/client";
 import TopNav from "../components/layout/TopNav";
 import { UserProvider } from "../context/userContext";
 
@@ -15,12 +14,10 @@ Router.events.on("routeChangeComplete", nProgress.done);
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider session={pageProps.session}>
-      <UserProvider>
-        <TopNav />
-        <Component {...pageProps} />;
-      </UserProvider>
-    </Provider>
+    <UserProvider>
+      <TopNav />
+      <Component {...pageProps} />;
+    </UserProvider>
   );
 }
 

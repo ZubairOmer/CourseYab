@@ -7,6 +7,7 @@ import absoluteURL from "next-absolute-url";
 import cloudinary from "cloudinary";
 import slugify from "slugify";
 import { IncomingForm } from "formidable";
+import next from "next";
 
 // Setting up cloudinary config
 cloudinary.config({
@@ -155,7 +156,6 @@ export const updateCourse = catchAsyncErrors(async (req, res, next) => {
   const course = await Course.findOneAndUpdate(
     { slug: req.query.slug },
     {
-      slug: slugify(req.body.name),
       ...req.body,
     },
     {
@@ -191,4 +191,42 @@ export const deleteLesson = catchAsyncErrors(async (req, res, next) => {
   const removedLesson = await Lesson.findByIdAndDelete(lesson._id);
 
   res.json({ success: true });
+});
+
+export const publishCourse = catchAsyncErrors(async (req, res, next) => {
+  const { courseId } = req.query;
+  // find post
+  const courseFound = await Course.findById(courseId)
+    .select("instructor")
+    .exec();
+  // is owner?
+  if (req.user._id != courseFound.instructor._id) {
+    return next(new ErrorHandler("Unauthorised", 403));
+  }
+
+  let course = await Course.findByIdAndUpdate(
+    courseId,
+    { published: true },
+    { new: true }
+  ).exec();
+  res.json(course);
+});
+
+export const unPublishCourse = catchAsyncErrors(async (req, res) => {
+  const { courseId } = req.query;
+  // find post
+  const courseFound = await Course.findById(courseId)
+    .select("instructor")
+    .exec();
+  // is owner?
+  if (req.user._id != courseFound.instructor._id) {
+    return res.status(400).send("Unauthorized");
+  }
+
+  let course = await Course.findByIdAndUpdate(
+    courseId,
+    { published: false },
+    { new: true }
+  ).exec();
+  res.json(course);
 });

@@ -10,6 +10,8 @@ import {
   CheckOutlined,
   SyncOutlined,
   UploadOutlined,
+  QuestionOutlined,
+  CloseOutlined,
 } from "@ant-design/icons";
 import ReactMarkdown from "react-markdown";
 import AddLessonForm from "../forms/AddLessonForm";
@@ -59,6 +61,7 @@ const CourseView = () => {
         values
       );
       setValues({ ...values, title: "", content: "" });
+      setProgress(0);
       setVisible(false);
       setUploadButtonText("Upload Vedio");
       console.log("course", course);
@@ -113,8 +116,42 @@ const CourseView = () => {
         }
       );
     } catch (error) {
-      // toast.error(error);
+      toast.error(error);
       return;
+    }
+  };
+
+  const handlePublish = async () => {
+    try {
+      let answer = window.confirm(
+        "Once you publish your course, it will be live in the marketplace for students to enroll."
+      );
+      if (!answer) return;
+      const { origin } = absoluteURL();
+      const { data } = await axios.put(
+        `${origin}/api/course/publish/${course._id}`
+      );
+      toast("Congrats. Your course is now live in marketplace!");
+      setCourse(data);
+    } catch (err) {
+      toast("Course publish failed. Try again");
+    }
+  };
+
+  const handleUnpublish = async () => {
+    try {
+      let answer = window.confirm(
+        "Once you unpublish your course, it will not appear in the marketplace for students to enroll."
+      );
+      if (!answer) return;
+      const { origin } = absoluteURL();
+      const { data } = await axios.put(
+        `${origin}/api/course/unpublish/${course._id}`
+      );
+      toast.success("Your course is now removed from the marketplace!");
+      setCourse(data);
+    } catch (err) {
+      toast.error("Course unpublish failed. Try again");
     }
   };
 
@@ -150,9 +187,27 @@ const CourseView = () => {
                       className="h5 pointer text-warning mr-5"
                     />
                   </Tooltip>
-                  <Tooltip title="Publish">
-                    <CheckOutlined className="h5 pointer text-danger mr-5" />
-                  </Tooltip>
+
+                  {/* course published ? unpublished */}
+                  {course.lessons && course.lessons.length < 5 ? (
+                    <Tooltip title="Min 5 lessons required to publish">
+                      <QuestionOutlined className="h5 pointer text-danger" />
+                    </Tooltip>
+                  ) : course.published ? (
+                    <Tooltip title="Unpublish">
+                      <CloseOutlined
+                        onClick={handleUnpublish}
+                        className="h5 pointer text-danger"
+                      />
+                    </Tooltip>
+                  ) : (
+                    <Tooltip title="Publish">
+                      <CheckOutlined
+                        onClick={handlePublish}
+                        className="h5 pointer text-success"
+                      />
+                    </Tooltip>
+                  )}
                 </div>
               </div>
             </div>
@@ -167,9 +222,8 @@ const CourseView = () => {
           <div className="row">
             <Button
               onClick={() => setVisible(true)}
-              className="col-md-6 offset-md-3 text-center"
+              className="col-md-6 offset-md-3 text-center mt-4"
               type="primary"
-              shape="round"
               icon={<UploadOutlined />}
               size="large"
             >
@@ -184,6 +238,7 @@ const CourseView = () => {
             onCancel={() => {
               setVisible(false);
               setUploadButtonText("Upload Vedio");
+              setValues({ ...values, title: "", content: "" });
             }}
             footer={null}
           >

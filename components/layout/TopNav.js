@@ -32,7 +32,7 @@ const TopNav = () => {
   };
 
   return (
-    <div className="py-2">
+    <div className="pt-2">
       <Menu
         mode="horizontal"
         style={{
