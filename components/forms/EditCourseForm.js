@@ -6,9 +6,10 @@ import Resizer from "react-image-file-resizer";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import absoluteURL from "next-absolute-url";
-import { Avatar, List } from "antd";
+import { Avatar, List, Modal } from "antd";
 import Item from "antd/lib/list/Item";
 import { DeleteOutlined } from "@ant-design/icons";
+import UpdateLessonForm from "./UpdateLessonForm";
 
 const EditCourse = () => {
   // state
@@ -25,8 +26,15 @@ const EditCourse = () => {
   const [image, setImage] = useState("");
   const [imagePreview, setImagePreview] = useState("");
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+  // state for esson updated
+  const [visible, setVisible] = useState(false);
+  const [current, setCurrent] = useState({});
+  const [uploadVideoButtonText, setUploadVideoButtonText] =
+    useState("Upload Video");
+  const [progress, setProgress] = useState(0);
+  const [uploading, setUploading] = useState(false);
   const router = useRouter();
-
+  console.log("Values", values);
   const { slug } = router.query;
 
   useEffect(() => {
@@ -131,6 +139,56 @@ const EditCourse = () => {
     }
   };
 
+  // update lesson function
+  // upload vedio to cloudinary after selecting vedio
+  // const handleVedio = async (event) => {
+  //   event.preventDefault();
+  //   const formData = new FormData();
+  //   const file = event.target.files[0];
+  //   formData.append("inputFile", file);
+
+  //   try {
+  //     setUploading(true);
+  //     setUploadButtonText(file.name);
+  //     const { origin } = absoluteURL();
+  //     const { data } = await axios.post(
+  //       `${origin}/api/course/upload-vedio/${values.instructor._id}`,
+  //       formData,
+  //       {
+  //         onUploadProgress: (e) => {
+  //           if (e.lengthComputable) {
+  //             setProgress(Math.round(100 * e.loaded) / e.total);
+  //           }
+  //         },
+  //       }
+  //     );
+  //     setUploading(false);
+  //     setCurrent({ ...current, vedio: data });
+  //     // setValues({ ...values, vedio: data });
+  //   } catch (error) {
+  //     toast.error("Sorry have not implemented this feature yet");
+  //     setUploading(false);
+  //   }
+  // };
+
+  // const handleUpdateLesson = async (e) => {
+  //   e.preventDefault();
+  //   let { data } = await axios.post(
+  //     `/api/course/lesson/${values._id}/${current._id}`,
+  //     current
+  //   );
+  //   setUploadButtonText("Upload video");
+  //   setProgress(0);
+  //   setVisible(false);
+  //   // update lessons
+  //   if (data.ok) {
+  //     let arr = values.lessons;
+  //     const index = arr.findIndex((el) => el._id === current._id);
+  //     arr[index] = current;
+  //     setValues({ ...values, lessons: arr });
+  //     toast("Lesson updated");
+  //   }
+  // };
   return (
     <>
       <h1 className="jumbotron bg-primary text-center square">Update Course</h1>
@@ -160,6 +218,10 @@ const EditCourse = () => {
                 onDrop={(e) => handleDrop(e, index)}
               >
                 <Item.Meta
+                  // onClick={() => {
+                  //   setVisible(true);
+                  //   setCurrent(item);
+                  // }}
                   avatar={<Avatar>{index + 1}</Avatar>}
                   title={item.title}
                 ></Item.Meta>
@@ -172,6 +234,24 @@ const EditCourse = () => {
           ></List>
         </div>
       </div>
+
+      {/* <Modal
+        tite="Update Lesson"
+        centered
+        visible={visible}
+        onCancel={() => setVisible(false)}
+        footer={null}
+      >
+        <UpdateLessonForm
+          current={current}
+          setCurrent={setCurrent}
+          // handleUpdateLesson={handleUpdateLesson}
+          uploading={uploading}
+          uploadVideoButtonText={uploadVideoButtonText}
+          // handleVedio={handleVedio}
+          progress={progress}
+        />
+      </Modal> */}
     </>
   );
 };

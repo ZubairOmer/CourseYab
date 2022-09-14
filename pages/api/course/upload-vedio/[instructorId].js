@@ -25,6 +25,7 @@ export const config = {
 };
 
 const uploadVedio = async (req, res) => {
+  console.log(req.user._id, req.query.instructorId);
   if (req.user._id !== req.query.instructorId) {
     return res.status(403).json({
       success: false,
