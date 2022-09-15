@@ -10,6 +10,6 @@ const handler = nc({ onError });
 
 dbConnect();
 
-handler.use(isAuthenticatedUser).get(singleCourseDetails);
+handler.get(singleCourseDetails);
 
 export default handler;

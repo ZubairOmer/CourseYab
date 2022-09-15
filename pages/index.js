@@ -1,29 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import axios from "axios";
-import absoluteURL from "next-absolute-url";
-import { toast } from "react-toastify";
 import CourseCard from "../components/cards/CourseCard";
 
-const IndexPage = () => {
-  const [courses, setCourses] = useState([]);
-
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const { origin } = absoluteURL();
-        const { data } = await axios.get(
-          `${origin}/api/course/published-courses`
-        );
-        setCourses(data);
-      } catch (error) {
-        toast.error(error.response.data.message);
-      }
-    };
-
-    fetchCourses();
-  }, []);
-
+const IndexPage = ({ courses }) => {
   return (
     <Layout title="Edemy">
       <h1 className="jumbotron text-center bg-danger square">
@@ -41,5 +21,17 @@ const IndexPage = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps() {
+  const { data } = await axios.get(
+    `${process.env.API}/course/published-courses`
+  );
+
+  return {
+    props: {
+      courses: data,
+    },
+  };
+}
 
 export default IndexPage;

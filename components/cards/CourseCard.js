@@ -6,7 +6,6 @@ const { Meta } = Card;
 
 const CourseCard = ({ course }) => {
   const { name, instructor, price, image, slug, paid, category } = course;
-  console.log("COURSE", course);
   return (
     <Link href="/course/[slug]" as={`/course/${slug}`}>
       <a>

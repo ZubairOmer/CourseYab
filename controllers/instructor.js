@@ -92,7 +92,7 @@ export const instructorCourses = catchAsyncErrors(async (req, res) => {
 export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
   const course = await Course.findOne({ slug: req.query.slug }).populate(
     "instructor",
-    "id"
+    "id name"
   );
 
   if (!course) {
@@ -100,7 +100,6 @@ export const singleCourseDetails = catchAsyncErrors(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
     course,
   });
 });

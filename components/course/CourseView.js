@@ -2,18 +2,18 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import SingleCourseJumbotron from "../../components/cards/SingleCourseJumbotron";
+import PreviewModal from "../modal/PreviewModal";
+import SingleCourseLessons from "../cards/SingleCourseLessons";
 
-const SingleCourse = ({ course }) => {
+const CourseView = ({ course }) => {
   // state
   const [showModal, setShowModal] = useState(false);
   const [preview, setPreview] = useState("");
-
   const router = useRouter();
   const { slug } = router.query;
 
   return (
     <>
-      {/* <pre>{JSON.stringify(course, null, 4)}</pre> */}
       <SingleCourseJumbotron
         course={course}
         showModal={showModal}
@@ -22,18 +22,22 @@ const SingleCourse = ({ course }) => {
         setPreview={setPreview}
       />
 
-      {showModal ? course.lessons[0].video.Location : "dont show"}
+      <PreviewModal
+        showModal={showModal}
+        preview={preview}
+        setShowModal={setShowModal}
+      />
+
+      {course.lessons && (
+        <SingleCourseLessons
+          lessons={course.lessons}
+          setPreview={setPreview}
+          showModal={showModal}
+          setShowModal={setShowModal}
+        />
+      )}
     </>
   );
 };
 
-export async function getServerSideProps({ query }) {
-  const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
-  return {
-    props: {
-      course: data,
-    },
-  };
-}
-
-export default SingleCourse;
+export default CourseView;

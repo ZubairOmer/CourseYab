@@ -26,6 +26,8 @@ module.exports = {
       return config;
     },
 
-    NEXTAUTH_URL: "http://localhost:3000",
+    // NEXTAUTH_URL: "http://localhost:3000",
+
+    API: "http://localhost:3000/api",
   },
 };
