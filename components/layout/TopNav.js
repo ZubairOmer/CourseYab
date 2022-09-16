@@ -15,8 +15,10 @@ import {
   TeamOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
+import { useRouter } from "next/router";
 
 const { Item, SubMenu, ItemGroup } = Menu;
+const router = { useRouter };
 
 const TopNav = () => {
   const {
@@ -29,6 +31,7 @@ const TopNav = () => {
   const handleLogout = () => {
     signOut();
     dispatch({ type: "LOGOUT" });
+    router.push("/");
   };
 
   return (

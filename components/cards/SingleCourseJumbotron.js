@@ -10,6 +10,7 @@ const SingleCourseJumbotron = ({
   preview,
   setPreview,
 }) => {
+  // console.log("FUCKING COURSEasfsdafsdf", course);
   // destructure
   const {
     name,

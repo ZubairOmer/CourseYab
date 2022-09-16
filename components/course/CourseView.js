@@ -12,10 +12,12 @@ const CourseView = ({ course }) => {
   const router = useRouter();
   const { slug } = router.query;
 
+  // console.log("LOGIING", course.course);
+
   return (
     <>
       <SingleCourseJumbotron
-        course={course}
+        course={course.course}
         showModal={showModal}
         setShowModal={setShowModal}
         preview={preview}
@@ -28,9 +30,9 @@ const CourseView = ({ course }) => {
         setShowModal={setShowModal}
       />
 
-      {course.lessons && (
+      {course.course.lessons && (
         <SingleCourseLessons
-          lessons={course.lessons}
+          lessons={course.course.lessons}
           setPreview={setPreview}
           showModal={showModal}
           setShowModal={setShowModal}

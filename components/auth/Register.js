@@ -65,7 +65,7 @@ const Register = () => {
 
   return (
     <Fragment>
-      <h1 className="jumbotron text-center bg-dark square">Register</h1>
+      <h1 className="jumbotron text-center bg-primary square">Register</h1>
 
       <div className="container col-md-4 offset-md-4 pb-5">
         <form onSubmit={handleSubmit}>

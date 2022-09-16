@@ -25,6 +25,7 @@ const SingleCourseLessons = ({
                 {item.vedio && item.vedio !== null && item.free_preview && (
                   <span
                     className="text-primary pointer"
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       setPreview(item.vedio.url);
                       setShowModal(!showModal);

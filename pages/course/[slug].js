@@ -16,7 +16,7 @@ export async function getServerSideProps({ query }) {
   const { data } = await axios.get(`${process.env.API}/course/${query.slug}`);
   return {
     props: {
-      course: data.course,
+      course: data,
     },
   };
 }
