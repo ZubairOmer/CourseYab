@@ -110,7 +110,9 @@ const Instructor = () => {
           className="d-flex justify-content-center display-1 text-primary p-5"
         />
       ) : (
-        <p>No course created by this onstructor now</p>
+        <p className="d-flex justify-content-center align-items-center ">
+          No course created by this onstructor now
+        </p>
       )}
     </>
   );

@@ -26,7 +26,7 @@ const lessonSchema = new mongoose.Schema(
     },
     free_preview: {
       type: Boolean,
-      default: false,
+      default: true,
     },
   },
   { timestamps: true }
