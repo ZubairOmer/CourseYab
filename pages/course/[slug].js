@@ -4,7 +4,7 @@ import axios from "axios";
 
 const CourseViewPage = ({ course }) => {
   return (
-    <Layout title={course.name}>
+    <Layout title={course.course.name}>
       <CourseView course={course} />
     </Layout>
   );

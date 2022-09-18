@@ -45,6 +45,12 @@ const userSchema = new mongoose.Schema({
   },
   resetPasswordToken: String,
   resetPasswordExpire: Date,
+  courses: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Course",
+    },
+  ],
 });
 
 // Encrypting password before saving user

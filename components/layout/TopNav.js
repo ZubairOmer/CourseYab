@@ -5,6 +5,7 @@ import { signOut } from "next-auth/client";
 import Image from "next/image";
 import { useSession } from "next-auth/client";
 import { UserContext } from "../../context/userContext";
+import { useRouter } from "next/router";
 
 import {
   AppstoreOutlined,
@@ -15,10 +16,8 @@ import {
   TeamOutlined,
   UserAddOutlined,
 } from "@ant-design/icons";
-import { useRouter } from "next/router";
 
 const { Item, SubMenu, ItemGroup } = Menu;
-const router = { useRouter };
 
 const TopNav = () => {
   const {
@@ -27,6 +26,7 @@ const TopNav = () => {
   } = useContext(UserContext);
   // const [session] = useSession();
   // const user = session && session.user;
+  const router = useRouter();
 
   const handleLogout = () => {
     signOut();

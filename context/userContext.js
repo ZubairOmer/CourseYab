@@ -26,8 +26,6 @@ const reducer = (state, action) => {
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, intialState);
 
-  console.log("KAPLER", state);
-
   useEffect(() => {
     const { origin } = absoluteURL();
     const loadUser = async () => {
