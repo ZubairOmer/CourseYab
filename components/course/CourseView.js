@@ -39,7 +39,7 @@ const CourseView = ({ course }) => {
   };
 
   const handlePaidEnrollment = () => {
-    console.log("paid enrollment");
+    toast.error("Sorry this course is not free. you have not setup stripe yet");
   };
 
   const handleFreeEnrollment = async (e) => {
@@ -50,15 +50,14 @@ const CourseView = ({ course }) => {
       if (!user) router.push("/login");
       // check if already enrolled
       if (enrolled.status)
-        return router.push(`/user/course/${enrolled.course.slug}`);
+        return router.push(`/me/course/${enrolled.course.slug}`);
       setLoading(true);
       const { data } = await axios.post(
-        `${origin}/api/free-enrollment/${course.course._id}`,
-        {}
+        `${origin}/api/free-enrollment/${course.course._id}`
       );
       toast.success(data.message);
       setLoading(false);
-      router.push(`/user/course/${data.course.slug}`);
+      router.push(`/me/course/${data.course.slug}`);
     } catch (err) {
       toast("Enrollment failed. Try again.");
       setLoading(false);

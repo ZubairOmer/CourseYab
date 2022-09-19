@@ -53,3 +53,14 @@ export const freeEnrollment = catchAsyncErrors(async (req, res) => {
     course,
   });
 });
+
+// get user courses
+export const getUserCourses = catchAsyncErrors(async (req, res) => {
+  const user = await User.findById(req.user._id);
+  const courses = await Course.find({ _id: { $in: user.courses } }).populate(
+    "instructor",
+    "_id name"
+  );
+
+  res.json(courses);
+});

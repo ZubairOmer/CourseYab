@@ -1,0 +1,31 @@
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import absoluteURL from "next-absolute-url";
+import axios from "axios";
+
+const UserCourse = () => {
+  const [loading, setLoading] = useState(false);
+  const [course, setCourse] = useState({ lessons: [] });
+
+  // router
+  const router = useRouter();
+  const { slug } = router.query;
+
+  useEffect(() => {
+    if (slug) loadCourse();
+  }, [slug]);
+
+  const loadCourse = async () => {
+    const { origin } = absoluteURL();
+    const { data } = await axios.get(`${origin}/api/user/course/${slug}`);
+    setCourse(data);
+  };
+
+  return (
+    <>
+      <h1>{JSON.stringify(course, null, 4)}</h1>
+    </>
+  );
+};
+
+export default UserCourse;
