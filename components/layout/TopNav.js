@@ -20,6 +20,8 @@ import {
 const { Item, SubMenu, ItemGroup } = Menu;
 
 const TopNav = () => {
+  const [current, setCurrent] = useState("");
+
   const {
     state: { user },
     dispatch,
@@ -27,6 +29,10 @@ const TopNav = () => {
   // const [session] = useSession();
   // const user = session && session.user;
   const router = useRouter();
+
+  useEffect(() => {
+    process.browser && setCurrent(window.location.pathname);
+  }, [process.browser && window.location.pathname]);
 
   const handleLogout = () => {
     signOut();
@@ -38,83 +44,105 @@ const TopNav = () => {
     <div className="pt-2">
       <Menu
         mode="horizontal"
+        selectedKeys={[current]}
         style={{
           padding: "4px 3px",
         }}
       >
-        <Item icon={<AppstoreOutlined />}>
+        <Item
+          key="/"
+          onClick={(e) => setCurrent(e.key)}
+          icon={<AppstoreOutlined />}
+        >
           <Link href="/">
-            <a>App</a>
+            <a>CourseYab</a>
           </Link>
         </Item>
 
         {user &&
           (user.role && user.role.includes("Instructor") ? (
-            <div>
-              <Item icon={<CarryOutOutlined />}>
-                <Link href="/instructor/course/create">
-                  <a className="text-black">Create Course</a>
-                </Link>
-              </Item>
-            </div>
+            <Item
+              key="/instructor/course/create"
+              onClick={(e) => setCurrent(e.key)}
+              icon={<CarryOutOutlined />}
+            >
+              <Link href="/instructor/course/create">
+                <a>Create Course</a>
+              </Link>
+            </Item>
           ) : (
-            <div>
-              <Item icon={<TeamOutlined />}>
-                <Link href="/me/become-instructor">
-                  <a>Become Instructor</a>
-                </Link>
-              </Item>
-            </div>
+            <Item
+              key="/me/become-instructor"
+              onClick={(e) => setCurrent(e.key)}
+              icon={<TeamOutlined />}
+            >
+              <Link href="/me/become-instructor">
+                <a>Become Instructor</a>
+              </Link>
+            </Item>
           ))}
 
         {user === null && (
           <>
-            <Item icon={<LoginOutlined />}>
-              <Link href="/login">
-                <a>Login</a>
+            <Item
+              className="float-right"
+              key="/register"
+              onClick={(e) => setCurrent(e.key)}
+              icon={<UserAddOutlined />}
+            >
+              <Link href="/register">
+                <a>Register</a>
               </Link>
             </Item>
 
-            <Item icon={<UserAddOutlined />}>
-              <Link href="/register">
-                <a>Register</a>
+            <Item
+              className="float-right"
+              key="/login"
+              onClick={(e) => setCurrent(e.key)}
+              icon={<LoginOutlined />}
+            >
+              <Link href="/login">
+                <a>Login</a>
               </Link>
             </Item>
           </>
         )}
 
-        {user && user.role && user.role.includes("Instructor") && (
-          <div className="ml-auto">
-            <Item icon={<TeamOutlined />} className="ml-auto">
-              <Link href="/instructor">
-                <a>Instructor</a>
-              </Link>
-            </Item>
-          </div>
+        {user !== null && (
+          <SubMenu
+            icon={
+              <Avatar
+                shape="circle"
+                size={50}
+                src={user.avatar && user.avatar.url}
+                className="mr-2"
+              />
+            }
+            title={user && user.name}
+            className="float-right"
+          >
+            <ItemGroup>
+              <Item>
+                <Link href="/me/update">
+                  <a>Profile</a>
+                </Link>
+              </Item>
+              <Item onClick={handleLogout}>Logout</Item>
+            </ItemGroup>
+          </SubMenu>
         )}
-        {user && user !== null && (
-          <div className={`${!user.role.includes("Instructor") && "ml-auto"}`}>
-            <SubMenu
-              icon={
-                <Avatar
-                  shape="circle"
-                  size={50}
-                  src={user.avatar && user.avatar.url}
-                  className="mr-1"
-                />
-              }
-              title={user && user.name}
-            >
-              <ItemGroup>
-                <Item>
-                  <Link href="/me/update">
-                    <a>Profile</a>
-                  </Link>
-                </Item>
-                <Item onClick={handleLogout}>Logout</Item>
-              </ItemGroup>
-            </SubMenu>
-          </div>
+
+        {user && user.role && user.role.includes("Instructor") && (
+          <Item
+            key="/instructor"
+            onClick={(e) => setCurrent(e.key)}
+            icon={<TeamOutlined />}
+            className="float-right"
+          >
+            <Link href="/instructor">
+              <a>Instructor</a>
+            </Link>
+          </Item>
         )}
       </Menu>
     </div>

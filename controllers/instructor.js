@@ -229,3 +229,10 @@ export const unPublishCourse = catchAsyncErrors(async (req, res) => {
   ).exec();
   res.json(course);
 });
+
+// students count for each course
+export const studentsCount = catchAsyncErrors(async (req, res) => {
+  const users = await User.find({ courses: req.body.courseId }).select("_id");
+
+  res.json(users);
+});
