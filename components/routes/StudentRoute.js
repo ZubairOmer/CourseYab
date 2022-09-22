@@ -10,32 +10,32 @@
 //   // router
 //   const router = useRouter();
 
-//   useEffect(() => {
-//     fetchUser();
-//   }, []);
+//   //   useEffect(() => {
+//   //     fetchUser();
+//   //   }, []);
 
-//   const fetchUser = async () => {
-//     try {
-//       const { origin } = absoluteURL();
-//       const { data } = await axios.get(`${origin}/api/me`);
-//       if (data.ok) setOk(true);
-//     } catch (err) {
-//       console.log(err);
-//       setOk(false);
-//       router.push("/login");
-//     }
-//   };
+//   //   const fetchUser = async () => {
+//   //     try {
+//   //       const { origin } = absoluteURL();
+//   //       const { data } = await axios.get(`${origin}/api/me`);
+//   //       if (data.ok) return setOk(true);
+//   //     } catch (err) {
+//   //       console.log(err);
+//   //       setOk(false);
+//   //       router.push("/login");
+//   //     }
+//   //   };
 
 //   return (
 //     <>
-//       {!ok ? (
+//       {/* {!ok ? (
 //         <SyncOutlined
 //           spin
 //           className="d-flex justify-content-center display-1 text-primary p-5"
 //         />
-//       ) : (
-//         <div className="container-fluid">{children}</div>
-//       )}
+//       ) : ( */}
+//       <div className="container-fluid">{children}</div>
+//       {/* )} */}
 //     </>
 //   );
 // };

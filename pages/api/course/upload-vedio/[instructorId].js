@@ -49,6 +49,8 @@ const uploadVedio = async (req, res) => {
       folder: "edemy/lesson-vedio",
       resource_type: "video",
       public_id: file.asset_id,
+      fetch_format: "mp4",
+      format: "mp4",
     });
     return res.json(response);
   } catch (error) {

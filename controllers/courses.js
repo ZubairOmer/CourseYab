@@ -3,6 +3,7 @@ import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import { Course } from "../models/course";
 import { Lesson } from "../models/course";
 import User from "../models/user";
+import Completed from "../models/completed";
 import slugify from "slugify";
 
 // get All published course in home page
@@ -63,4 +64,62 @@ export const getUserCourses = catchAsyncErrors(async (req, res) => {
   );
 
   res.json(courses);
+});
+
+// mark as complete lesson
+export const markCompleted = catchAsyncErrors(async (req, res) => {
+  const { courseId, lessonId } = req.body;
+  // find if user with that course is already created
+  const existing = await Completed.findOne({
+    user: req.user._id,
+    course: courseId,
+  }).exec();
+
+  if (existing) {
+    // update
+    const updated = await Completed.findOneAndUpdate(
+      {
+        user: req.user._id,
+        course: courseId,
+      },
+      {
+        $addToSet: { lessons: lessonId },
+      }
+    ).exec();
+    res.json({ ok: true });
+  } else {
+    // create
+    const created = await new Completed({
+      user: req.user._id,
+      course: courseId,
+      lessons: lessonId,
+    }).save();
+    res.json({ ok: true });
+  }
+});
+
+// get list of completed lessons
+export const listCompleted = catchAsyncErrors(async (req, res) => {
+  const list = await Completed.findOne({
+    user: req.user._id,
+    course: req.body.courseId,
+  }).exec();
+  list && res.json(list.lessons);
+});
+
+// mark the lesson as incomplete
+export const markInCompleted = catchAsyncErrors(async (req, res) => {
+  const { courseId, lessonId } = req.body;
+  // find if user with that course is already created
+  const updated = await Completed.findOneAndUpdate(
+    {
+      user: req.user._id,
+      course: courseId,
+    },
+    {
+      $pull: { lessons: lessonId },
+    }
+  ).exec();
+
+  res.json({ ok: true });
 });
