@@ -6,13 +6,13 @@ import CourseCard from "../components/cards/CourseCard";
 const IndexPage = ({ courses }) => {
   return (
     <Layout title="Edemy">
-      <h1 className="jumbotron text-center bg-danger square">
-        Online education marketplace
+      <h1 className="jumbotron text-center bg-primary square">
+        Online Education Marketplace
       </h1>
       <div className="container-fluid">
-        <div className="row pt-2">
+        <div className="row">
           {courses.map((course) => (
-            <div key={course._id} className="col-md-4">
+            <div key={course._id} className="col-md-3">
               <CourseCard key={course._id} course={course} />
             </div>
           ))}
