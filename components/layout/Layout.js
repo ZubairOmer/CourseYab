@@ -5,7 +5,7 @@ import Head from "next/head";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const Layout = ({ title, children }) => {
+const Layout = ({ title = "CourseYab", children }) => {
   return (
     <Fragment>
       <Head>

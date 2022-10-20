@@ -31,7 +31,7 @@ const SingleCourseJumbotron = ({
   } = course;
 
   return (
-    <div className="jumbotron bg-primary square">
+    <div className=" bg-[#03a9f4] p-5 text-white">
       <div className="row">
         <div className="col-md-8">
           {/* title */}

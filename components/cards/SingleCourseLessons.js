@@ -8,7 +8,7 @@ const SingleCourseLessons = ({
   setShowModal,
 }) => {
   return (
-    <div className="container">
+    <div className="container mt-4">
       <div className="row">
         <div className="col lesson-list">
           {lessons && <h4>{lessons.length} Lessons</h4>}
@@ -24,7 +24,7 @@ const SingleCourseLessons = ({
                 />
                 {item.vedio && item.vedio !== null && item.free_preview && (
                   <span
-                    className="text-primary pointer"
+                    className="text-[#03a9f4] pointer"
                     style={{ cursor: "pointer" }}
                     onClick={() => {
                       setPreview(item.vedio.url);

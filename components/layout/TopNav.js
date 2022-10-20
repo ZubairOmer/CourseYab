@@ -42,13 +42,7 @@ const TopNav = () => {
 
   return (
     <div className="pt-2">
-      <Menu
-        mode="horizontal"
-        selectedKeys={[current]}
-        style={{
-          padding: "4px 3px",
-        }}
-      >
+      <Menu mode="horizontal" selectedKeys={[current]} className="p-1">
         <Item
           key="/"
           onClick={(e) => setCurrent(e.key)}

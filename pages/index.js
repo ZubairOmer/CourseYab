@@ -5,18 +5,17 @@ import CourseCard from "../components/cards/CourseCard";
 
 const IndexPage = ({ courses }) => {
   return (
-    <Layout title="Edemy">
-      <h1 className="jumbotron text-center bg-primary square">
+    <Layout title="CourseYab">
+      <h1 className=" text-center bg-[#03a9f4] text-white p-5">
         Online Education Marketplace
       </h1>
-      <div className="container-fluid">
-        <div className="row">
-          {courses.map((course) => (
-            <div key={course._id} className="col-md-3">
+      <div className="flex justify-center align-center flex-wrap space-x-12 ">
+        {courses &&
+          courses.map((course) => (
+            <div key={course._id}>
               <CourseCard key={course._id} course={course} />
             </div>
           ))}
-        </div>
       </div>
     </Layout>
   );
