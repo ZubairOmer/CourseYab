@@ -31,6 +31,8 @@ const UserProvider = ({ children }) => {
     const loadUser = async () => {
       try {
         const { data } = await axios.get(`${origin}/api/me`);
+        // save user to local storage
+        // localStorage.setItem("user", data.user);
         dispatch({ type: "LOGIN", payload: data.user });
       } catch (error) {
         return;
