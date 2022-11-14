@@ -34,8 +34,8 @@ const BecomeInstructor = () => {
       const { data } = await axios.put(
         `${origin}/api/instructor/make-instructor`
       );
-      toast.success("You become instructor now you can create courese");
       console.log("ooff 2");
+      toast.success("You become instructor now you can create courese");
       const { data: session } = await axios.get(`${origin}/api/me`);
       console.log("ooff 3");
       dispatch({ type: "LOGIN", payload: session.user });
