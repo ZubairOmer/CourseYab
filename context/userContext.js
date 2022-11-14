@@ -32,7 +32,7 @@ const UserProvider = ({ children }) => {
       try {
         const { data } = await axios.get(`${origin}/api/me`);
         // save user to local storage
-        // localStorage.setItem("user", data.user);
+        // localStorage.setItem("user", JSON.stringify(data.user));
         dispatch({ type: "LOGIN", payload: data.user });
       } catch (error) {
         return;
