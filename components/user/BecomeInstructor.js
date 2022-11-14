@@ -28,15 +28,21 @@ const BecomeInstructor = () => {
   const becomeInstructor = async () => {
     try {
       const { origin } = absoluteURL();
-      setLoading(true);
+      // setLoading(true);
+      console.log("ooff 1");
+
       const { data } = await axios.put(
         `${origin}/api/instructor/make-instructor`
       );
       toast.success("You become instructor now you can create courese");
+      console.log("ooff 2");
       const { data: session } = await axios.get(`${origin}/api/me`);
+      console.log("ooff 3");
       dispatch({ type: "LOGIN", payload: session.user });
+      console.log("ooff 4");
       // window.location.href = "/instructor/course/create";
       router.push("/instructor/course/create");
+      console.log("ooff 5");
     } catch (error) {
       toast.error("Could not become instructor try later");
       console.log("ERROR", error);
