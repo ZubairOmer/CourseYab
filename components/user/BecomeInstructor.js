@@ -39,6 +39,8 @@ const BecomeInstructor = () => {
       router.push("/instructor/course/create");
     } catch (error) {
       toast.error("Could not become instructor try later");
+      console.log("ERROR", error);
+
       setLoading(false);
     }
   };
