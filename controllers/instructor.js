@@ -17,11 +17,18 @@ cloudinary.config({
 });
 
 // make user instructor
-export const makeInstructor = catchAsyncErrors(async (req, res) => {
+export const makeInstructor = catchAsyncErrors(async (req, res, next) => {
   let user = await User.findById(req.user._id);
 
+  if (!user) {
+    return next(new ErrorHandler("User Not found", 404));
+
+    console.log("shit one");
+  }
   user.role = ["Instructor", "Subscriber"];
   await user.save();
+
+  console.log("shit two");
 
   res.status(200).json({
     success: true,
