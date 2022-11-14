@@ -28,6 +28,6 @@ module.exports = {
 
     // NEXTAUTH_URL: "http://localhost:3000",
 
-    API: "http://localhost:3000/api",
+    API: "https://course-yab.vercel.app/api",
   },
 };
