@@ -11,12 +11,13 @@ import {
 } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import UserRoute from "../../components/routes/UserRoute";
-import router from "next/router";
+import { useRouter } from "next/router";
 
 const BecomeInstructor = () => {
   // state
   const [loading, setLoading] = useState(false);
   // const [session] = useSession();
+  const router = useRouter();
 
   // const user = session && session.user;
   const {
@@ -44,29 +45,29 @@ const BecomeInstructor = () => {
 
   return (
     <>
-      <h1 className="jumbotron bg-success text-center square">
+      <h1 className='jumbotron bg-success text-center square'>
         Become Instructor
       </h1>
 
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 offset-md-3 text-center">
-            <div className="pt-4">
-              <UserSwitchOutlined className="display-1 pb-3" />
+      <div className='container'>
+        <div className='row'>
+          <div className='col-md-6 offset-md-3 text-center'>
+            <div className='pt-4'>
+              <UserSwitchOutlined className='display-1 pb-3' />
               <br />
               <h2>Setup payout to publish courses on Edemy</h2>
-              <p className="lead text-warning">
+              <p className='lead text-warning'>
                 Edemy partners with stripe to transfer earnings to your bank
                 account
               </p>
 
               <Button
-                className="mb-3"
-                type="primary"
+                className='mb-3'
+                type='primary'
                 block
-                shape="round"
+                shape='round'
                 icon={loading ? <LoadingOutlined /> : <SettingOutlined />}
-                size="large"
+                size='large'
                 onClick={becomeInstructor}
                 disabled={
                   (user && user.role && user.role.includes("Instructor")) ||
@@ -76,7 +77,7 @@ const BecomeInstructor = () => {
                 {loading ? "Processing..." : "Payout Setup"}
               </Button>
 
-              <p className="lead">
+              <p className='lead'>
                 You will be redirected to stripe to complete onboarding process.
               </p>
             </div>
